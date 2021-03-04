@@ -1,0 +1,177 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.color-nav{
+  background-color: #1B396A !important;
+  color: white !important;
+  width: 100%;
+  height: 50px;
+  padding: .5rem 1rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgb(255, 255, 255);
+}
+
+.navBar{
+  color: white;
+  
+}
+
+.color-nav-contacto{
+  background-color: #419ECC !important;
+  color: white !important;
+  height: 35px;
+  font-size: 14px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .color-nav-contacto{
+    background-color: #419ECC !important;
+    color: white !important;
+    height: auto;
+  }
+}
+
+.color-nav-contacto .nav-link:not(:last-child){
+  border-right: 1px solid white;
+}
+
+
+@media (max-width: 768px) {
+ .color-nav-contacto .nav-link:not(:last-child) {
+   border-right: none;
+ }
+}
+
+.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}
+
+.card-container{
+  padding: 20px 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: #D7ECF7;
+}
+
+.card{
+  overflow:hidden;
+}
+
+.card-text{
+  color: white;
+  text-align: center;
+  vertical-align: text-bottom;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+
+.card:hover{
+  -webkit-transform:scale(1.25);
+  -moz-transform:scale(1.25);
+  -ms-transform:scale(1.25);
+  -o-transform:scale(1.25);
+  transform:scale(1.25);
+  transition-duration: 0.6s;
+}
+
+
+.card-img-top{
+  width:100%;
+  height:auto;
+}
+
+.carousel img{
+  max-width: 25% !important;
+  height: auto;
+}
+.carousel .slide{
+  background: rgb(255, 255, 255) !important;
+}
+
+.footer{
+  width: 100%;
+  background-color: #231F20;
+  display: flex;
+}
+
+.imagenFooter{
+  margin-left: 20%;
+}
+
+.infoFooter{
+  font-size: 14px;
+  margin-top: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
+  color: white;
+}
+
+.opcionesFooter{
+  margin-right: 10px;
+  display: inline-block;
+  color: #696969;
+}
+
+.contenedor{
+  padding: 40px 40px;
+  overflow: auto;
+  max-height: 400px;
+  margin-bottom: 5px;
+  
+  
+}
+.individualFeed{
+  
+  background: green;
+  margin-bottom: 20px;
+}
+
+.wrapper{
+  margin-bottom: 20px;
+}
+.wrapper h1{
+  border-bottom: 4px solid #F87E0C;
+}
