@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Axios from 'axios'
 
 import reportWebVitals from './reportWebVitals';
-import Users from './components/Users';
 import Header from './components/Header';
 import NavbarITG from './components/NavbarITG'
 import NavbarContacto from './components/NavbarContacto'
@@ -11,6 +11,7 @@ import Cards from './components/Cards'
 import CarouselITG from './components/CarouselITG'
 import Footer from './components/Footer'
 import Feed from './components/Feed'
+//import FormularioAvisos from './components/FormularioAvisos'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -26,6 +27,15 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+/*ReactDOM.render(
+  <React.StrictMode>
+    <div>
+    <FormularioAvisos />
+    </div>
+    
+  </React.StrictMode>,
+  document.getElementById('root')
+)*/
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

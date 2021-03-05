@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.css';
 import FacebookPlugin from './FacebookPlugin';
+import Axios from 'axios'
 
 
 
 const Feed = (() => {
-    const [users, setUsers] = useState([]);
+   /* const [users, setUsers] = useState([]);
 
     useEffect(() => {
         fetch("/users/").then(res => {
@@ -16,10 +18,22 @@ const Feed = (() => {
                 return res.json()
             }
         }).then(jsonRes => setUsers(jsonRes.usersList))
-    })
+    })*/
+    const [avisosList, setAvisosList] = useState([]);
+
+    const getAvisos = () => {
+        Axios.get('http://localhost:3000/getAvisos').then((response) => {
+           setAvisosList(response.data); 
+        })
+
+    }
 
     return (
         <>
+        <Button onClick={getAvisos}>Mostrar avisos</Button>
+        {avisosList.map((val,key)=>{
+                    return <div> <p key={val.id}>{val.titulo}</p> {val.id} </div>
+                })}
             <Container fluid className="wrapper">
                 <Row >
                     <Col lg={1}></Col>
@@ -32,22 +46,7 @@ const Feed = (() => {
                 <Row >
                     <Col lg={1}></Col>
                     <Col lg={8} className="contenedor">
-                        {users.map(user => {
-                            return (
-
-                                <>
-                                    <h3>Becas Santander</h3>
-                                    <br />
-                                    <h5 key={user}>{user}</h5>
-                                    <br />
-                                    <strong>Fecha: 01/03/2021</strong>
-                                </>
-
-                            )
-
-
-
-                        })}
+                        
                     </Col>
                     <Col lg={2} className="facebook">
                         <FacebookPlugin />

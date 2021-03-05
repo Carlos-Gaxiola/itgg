@@ -6,10 +6,10 @@ exports.usersControllers = (req,res) =>{
     })
 }
 
-controller.listAvisos =  (req,res)=>{
+/*controller.listAvisos =  (req,res)=>{
     req.getConnection((err, conn)=>{
         conn.query('SELECT * FROM avisos',(error,avisos)=>{
             console.log(avisos)
         });
     });
-}
+}*/
