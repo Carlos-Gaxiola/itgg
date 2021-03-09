@@ -10,30 +10,27 @@ import Axios from 'axios'
 
 
 const Feed = (() => {
-   /* const [users, setUsers] = useState([]);
+    /* const [users, setUsers] = useState([]);
+ 
+     useEffect(() => {
+         fetch("/users/").then(res => {
+             if (res.ok) {
+                 return res.json()
+             }
+         }).then(jsonRes => setUsers(jsonRes.usersList))
+     })*/
 
-    useEffect(() => {
-        fetch("/users/").then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-        }).then(jsonRes => setUsers(jsonRes.usersList))
-    })*/
     const [avisosList, setAvisosList] = useState([]);
-
-    const getAvisos = () => {
+    useEffect(() => {
         Axios.get('http://localhost:3000/getAvisos').then((response) => {
-           setAvisosList(response.data); 
+            setAvisosList(response.data);
         })
+        console.log("Cargue los avisos we")
+    }, [])
 
-    }
 
     return (
         <>
-        <Button onClick={getAvisos}>Mostrar avisos</Button>
-        {avisosList.map((val,key)=>{
-                    return <div> <p key={val.id}>{val.titulo}</p> {val.id} </div>
-                })}
             <Container fluid className="wrapper">
                 <Row >
                     <Col lg={1}></Col>
@@ -46,8 +43,16 @@ const Feed = (() => {
                 <Row >
                     <Col lg={1}></Col>
                     <Col lg={8} className="contenedor">
-                        
+                        {avisosList.map((val, key) => {
+                            return <div className="avisos">
+                                <p key={val.id}>{val.titulo}</p>
+                                {val.descripcion}
+                                <hr></hr>
+                            </div>
+                        })}
                     </Col>
+
+
                     <Col lg={2} className="facebook">
                         <FacebookPlugin />
                     </Col>
@@ -55,6 +60,10 @@ const Feed = (() => {
                 </Row>
 
             </Container>
+            <Button className="button">
+                Añadir avisos
+            </Button>
+
         </>
     )
 

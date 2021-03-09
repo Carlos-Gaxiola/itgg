@@ -4,25 +4,14 @@ import './index.css';
 import Axios from 'axios'
 
 import reportWebVitals from './reportWebVitals';
-import Header from './components/Header';
-import NavbarITG from './components/NavbarITG'
-import NavbarContacto from './components/NavbarContacto'
-import Cards from './components/Cards'
-import CarouselITG from './components/CarouselITG'
-import Footer from './components/Footer'
-import Feed from './components/Feed'
+import App from './App';
+
 //import FormularioAvisos from './components/FormularioAvisos'
 
 ReactDOM.render(
   <React.StrictMode>
     <div>
-      <Header/>
-      <NavbarITG/>
-      <NavbarContacto/>
-      <CarouselITG/>
-      <Cards/>
-      <Feed/>
-      <Footer/>
+        <App/>
     </div>
   </React.StrictMode>,
   document.getElementById('root')
