@@ -188,5 +188,118 @@ hr{
 .button{
   margin-left: 11%;
   margin-bottom: 20px;
-  border-radius: 10px;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.link{
+  color: black;
+}
+
+.bg-light{
+  background-color: #1B396A !important;
+  color: white !important;
+  width: 100%;
+  border-top: 3px solid #F87E0C;
+  
+  
+}
+.bg-light a{
+  background-color: #1B396A !important;
+  color: white !important;
+  width: 100%;
+  height: 100%;
+  font-size: 25px;
+  
+  
+}
+
+.mr-auto{
+ margin-left:auto !important; 
+ margin-right: auto !important;
+}
+
+.form-label{
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+.form-control{
+  width: 100%;
+  border-radius: .75rem;
+  border: 1px solid #000000;
+  padding: 0.175rem .75rem;
+  
+}
+.form{
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.confirmacion{
+  color: #ffffff; 
+  font-size: 18px; 
+  font-weight: 400; 
+  text-align: center; 
+  background: #889ccf; 
+  margin: 0 0 25px; 
+  overflow: hidden; 
+  padding: 20px; 
+  border-radius: 35px 0px 35px 0px; 
+  -moz-border-radius: 35px 0px 35px 0px; 
+  -webkit-border-radius: 35px 0px 35px 0px; 
+  border: 2px solid #5878ca;
+}
+
+.info-carrera{
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.info-carrera h1{
+  color: #1B396A;
+  font-weight: 600;
+  border-bottom:4px solid #F87E0C;
+
+}
+.info-carrera h2{
+    color: #419ecc; 
+    font-weight: 600;
+    padding-top: 20px;
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    text-align: center;
+}
+.info-carrera h3{
+  display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+.info-carrera h4{
+  font-size: 1.5rem;
+  margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+}
+.info-carrera p{
+  display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    margin-top: 0;
+    margin-bottom: 1rem;
+
 }

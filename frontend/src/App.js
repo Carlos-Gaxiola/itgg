@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Main from './components/Main'
 import FormularioAvisos from './components/FormularioAvisos'
+import OfertaAcademica from './components/OfertaAcademica'
 
 import './App.css';
 
@@ -15,6 +16,9 @@ function App() {
                 </Route>
                 <Route path="/formularioAvisos">
                     <FormularioAvisos />
+                </Route>
+                <Route path="/ofertaAcademica">
+                    <OfertaAcademica />
                 </Route>
             </Switch>
         </Router>

@@ -17,7 +17,7 @@ class NavbarITG extends Component {
           <Navbar.Brand href="#home"></Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="navbar-center">
+            <Nav className="mr-auto">
             <NavDropdown className="color-nav" title="Inicio" id="collasible-nav-dropdown">
                 
               </NavDropdown>
