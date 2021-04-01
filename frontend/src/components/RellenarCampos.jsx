@@ -1,8 +1,8 @@
 import React from 'react'
 
-const RellenarCampos = () => {
+const RellenarCampos = ({mensaje}) => {
     return (
-        <h6 className="confirmacion">Favor de llenar todos los campos</h6>
+        <h6 className="confirmacion">{mensaje}</h6>
     )
 }
 

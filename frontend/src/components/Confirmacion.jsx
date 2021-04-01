@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Confirmacion = () => {
+const Confirmacion = ({mensaje}) => {
     return (
-        <h6 className="confirmacion">Aviso añadido exitosamente</h6>
+        <h6 className="confirmacion">{mensaje} se ha añadido correctamente</h6>
     )
 }
 

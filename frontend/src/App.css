@@ -303,3 +303,32 @@ hr{
     margin-bottom: 1rem;
 
 }
+
+.avisoTitulo{
+  color: rgb(12, 23, 177)
+}
+
+.avisoFile{
+  margin-left: 10px;
+  color: red;
+  transform: scale(1.5);
+}
+
+.avisoFileDate{
+  display: flex;
+  justify-content: space-between;
+}
+
+.perfilEgreso{
+  white-space: pre;
+}
+
+.ofertaContainer{
+  margin-left: 12%;
+  margin-right: 12%;
+}
+
+.carrusel{
+  width: auto;
+  height: fit-content;
+}

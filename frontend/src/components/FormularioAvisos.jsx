@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import Moment from 'moment'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -20,7 +21,6 @@ const FormularioAvisos = (() => {
 
     const [titulo, setTitulo] = useState("");
     const [descripcion, setDescripcion] = useState("");
-    const [fecha, setFecha] = useState("2021-03-05");
     const [avisosList, setAvisosList] = useState([]);
     const [avisosAdd, setAvisosAdd] = useState(0);
 
@@ -30,7 +30,9 @@ const FormularioAvisos = (() => {
     const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
     const [uploadPercentage, setUploadPercentage] = useState(0);
+    const fecha = Moment().format('YYYY/MM/DD')
     var filePathSave = ""
+
 
     const onChange = (e) => {
         setFile(e.target.files[0]);
@@ -41,7 +43,7 @@ const FormularioAvisos = (() => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('file', file);
-
+        if(file != ""){
         try {
             const res = await Axios.post('/uploads', formData, {
                 headers: {
@@ -63,8 +65,8 @@ const FormularioAvisos = (() => {
                 setMessage(err.response.data.msg);
             }
         }
+        }
 
-        console.log(titulo, descripcion, fecha, filePathSave);
         if (titulo != "" && descripcion != "") {
             Axios.post('http://localhost:3000/createAviso', {
                 titulo: titulo,
@@ -77,6 +79,8 @@ const FormularioAvisos = (() => {
                 setTimeout(function () { setAvisosAdd(0) }, 2000)
                 setTitulo("")
                 setDescripcion("")
+                setFileName("Elige un archivo")
+                setFile("")
             })
         }
         else {
@@ -95,7 +99,7 @@ const FormularioAvisos = (() => {
                     <Col lg={4}>
                         <Form id="formAvisos">
                             {
-                                avisosAdd == 1 && <Confirmacion />
+                                avisosAdd == 1 && <Confirmacion mensaje="Aviso" />
                             }
                             {
                                 avisosAdd == 2 && <RellenarCampos />

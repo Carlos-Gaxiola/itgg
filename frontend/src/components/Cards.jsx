@@ -11,7 +11,7 @@ const Cards = () => {
             <div className="row">
                 <div className="col-md-3">
                     <div className="card">
-                        <img className="card-img-top" src={NuevoIngreso} alt="Card image cap" />
+                        <img className="card-img-top" src={NuevoIngreso} alt="Nuevo ingreso" />
                         <div className="card-img-overlay card-img-overlay h-100 d-flex flex-column justify-content-end">
                             <p className="card-text">Nuevo ingreso</p>
                         </div>
@@ -19,7 +19,7 @@ const Cards = () => {
                 </div>
                 <div className="col-md-3">
                     <div className="card">
-                        <img className="card-img-top" src={Reinscripcion} alt="Card image cap" />
+                        <img className="card-img-top" src={Reinscripcion} alt="Reinscripcion" />
                         <div className="card-img-overlay h-100 d-flex flex-column justify-content-end">
                             <p className="card-text">Reinscripción</p>
                         </div>
@@ -27,7 +27,7 @@ const Cards = () => {
                 </div>
                 <div className="col-md-3">
                     <div className="card">
-                        <img className="card-img-top" src={Titulacion} alt="Card image cap" />
+                        <img className="card-img-top" src={Titulacion} alt="Titulacion" />
                         <div className="card-img-overlay card-img-overlay h-100 d-flex flex-column justify-content-end">
                             <p className="card-text">Titulación</p>
                         </div>
@@ -35,7 +35,7 @@ const Cards = () => {
                 </div>
                 <div className="col-md-3">
                     <div className="card">
-                        <img className="card-img-top" src={Egresados} alt="Card image cap" />
+                        <img className="card-img-top" src={Egresados} alt="Egresados" />
                         <div className="card-img-overlay card-img-overlay h-100 d-flex flex-column justify-content-end">
                             <p className="card-text">Egresados</p>
                         </div>
