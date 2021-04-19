@@ -28,29 +28,39 @@ const OfertaAcademica = () => {
                 datosCarrera &&
                 datosCarrera.map((val) => {
                     return <div className="ofertaContainer">
-                    <container fluid className="mt-5 mb-5">
-                        <div className="row">
-                            <div className="col-lg-1 " />
-                            <div className="info-carrera col-lg-10">
-                                <h1>{val.licenciatura}</h1>
-                                <h2>{val.licenciatura}</h2>
-                                <h4>{val.codigo}</h4>
-                                <h3>Objetivo general</h3>
-                                <p>{val.objetivo}</p>
-                                <h3>Perfil de egreso</h3>
-                                <p className="perfilEgreso">{val.perfil}</p>
-                                {
-                                    val.file ?
-                                        <Link to={val.file} target="_blank">
-                                            Ver plan de estudios<PictureAsPdf className="avisoFile"></PictureAsPdf>
-                                        </Link>
-                                        :
-                                        <p></p>
-                                }
+                        <container fluid className="mt-5 mb-5">
+                            <div className="row">
+                                <div className="col-lg-1 " />
+                                <div className="info-carrera col-lg-10">
+                                    <h1>{val.licenciatura}</h1>
+                                    <h2>{val.licenciatura}</h2>
+                                    <h4>{val.codigo}</h4>
+                                    <h3>Objetivo general</h3>
+                                    <p>{val.objetivo}</p>
+                                    <h3>Perfil de egreso</h3>
+                                    <p className="perfilEgreso">{val.perfil}</p>
+                                    {
+                                        val.file ?
+                                            <Link to={val.file} target="_blank">
+                                                Ver plan de estudios<PictureAsPdf className="avisoFile"></PictureAsPdf>
+                                            </Link>
+                                            :
+                                            <p></p>
+                                    }
+                                </div>
+                                <Button className="button">
+                                    <Link to={`/editarCarrera/${val.id}`} className="link">
+                                        Editar oferta academica
+                                    </Link>
+                                </Button>
+                                <Button className="button">
+                                    <Link to={`/eliminarCarrera/${val.id}`} className="link">
+                                        Eliminar oferta academica
+                                    </Link>
+                                </Button>
+                                <div className="col-lg-1" />
                             </div>
-                            <div className="col-lg-1" />
-                        </div>
-                    </container>
+                        </container>
                     </div>
                 })
             }

@@ -19,6 +19,7 @@ import RellenarCampos from './RellenarCampos'
 
 const EditarAviso = (() => {
 
+    const [campoVacio, setCampoVacio] = useState(false)
     const [titulo, setTitulo] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [avisosList, setAvisosList] = useState([]);
@@ -33,6 +34,8 @@ const EditarAviso = (() => {
     const [message, setMessage] = useState('');
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const fecha = Moment().format('YYYY/MM/DD')
+    const [mostrar, setMostrar] = useState(false);
+    Axios.defaults.withCredentials = true;
 
     useEffect(() => {
         Axios.get('http://localhost:3000/getDatosAviso/' + id).then((response) => {
@@ -40,123 +43,153 @@ const EditarAviso = (() => {
         })
     }, [id])
 
+    useEffect(() => {
+        setTitulo(datos.titulo);
+        setDescripcion(datos.descripcion)
+    }, [datos])
+
+    useEffect(() => {
+        if (titulo == "" || descripcion == "") {
+            setCampoVacio(true)
+        } else {
+            setCampoVacio(false)
+        }
+    }, [titulo, descripcion])
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+                window.location = '/'
+            }
+        })
+    }, [])
+
     const updateAviso = (filePath) => {
-        if (titulo != "" && descripcion != "") {
-            Axios.post('http://localhost:3000/editAviso', {
-                titulo: titulo,
-                descripcion: descripcion,
-                id: id,
-                file: filePath
-            }).then(() => {
-                setAvisosAdd(1)
-                document.getElementById("formAvisos").reset();
-                setTimeout(function () { setAvisosAdd(0) }, 2000)
-                setTitulo("")
-                setDescripcion("")
-                setFileName("Elige un archivo")
-                setFile("")
-            })
-        }
-        else {
-            setAvisosAdd(2)
+        Axios.post('http://localhost:3000/editAviso', {
+            titulo: titulo,
+            descripcion: descripcion,
+            id: id,
+            file: filePath
+        }).then(() => {
+            setAvisosAdd(1)
             setTimeout(function () { setAvisosAdd(0) }, 2000)
-        }
+            setFileName("Elige un archivo")
+            setFile("")
+        })
     }
 
-    const onChange = (e) => {
-        setFile(e.target.files[0]);
-        setFileName(e.target.files[0].name);
+const onChange = (e) => {
+    setFile(e.target.files[0]);
+    setFileName(e.target.files[0].name);
+}
+
+const handleTitleChange = (t) => {
+    setTitulo(t)
+}
+
+const handleDescriptionChange = (d) => {
+    setDescripcion(d)
+}
+
+const onSubmit = async (e) => {
+    if (campoVacio == false) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', file);
+
+    if (file == "") {
+        Axios.post(`/uploads-editDel/${id}`).then((response) => {
+            const { filePath } = response.data;
+            updateAviso(filePath)
+        })
     }
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('file', file);
-
-        if (file == "") {
-            Axios.post(`/uploads-editDel/${id}`).then((response) => {
-                const { filePath } = response.data;
-                updateAviso(filePath)
-            })
-        }
-
-        if (file != "") {
-            try {
-                const res = await Axios.post(`/uploads-edit/${id}`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }
-
-                });
-
-                const { fileName, filePath } = res.data;
-
-                setMessage('Archivo subido')
-                updateAviso(filePath)
-            } catch (err) {
-                if (err.response.status === 500) {
-                    setMessage("Hubo un problema con el servidor");
-                } else {
-                    setMessage(err.response.data.msg);
+    if (file != "") {
+        try {
+            const res = await Axios.post(`/uploads-edit/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 }
+
+            });
+
+            const { fileName, filePath } = res.data;
+
+            setMessage('Archivo subido')
+            updateAviso(filePath)
+        } catch (err) {
+            if (err.response.status === 500) {
+                setMessage("Hubo un problema con el servidor");
+            } else {
+                setMessage(err.response.data.msg);
             }
         }
-
-        
+    }
+    }
+    else {
+        setAvisosAdd(2)
+        setTimeout(function () { setAvisosAdd(0) }, 2000)
     }
 
-    return (
-        <>
-            <Header></Header>
-            <NavbarITG></NavbarITG>
-            <Container fluid className="mt-5 mb-5">
-                <Row>
-                    <Col lg={4} />
-                    <Col lg={4}>
-                        <Form id="formAvisos">
-                            {
-                                avisosAdd == 1 && <Confirmacion mensaje="Aviso" />
-                            }
-                            {
-                                avisosAdd == 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
-                            }
-                            <Form.Group controlId="titulo">
-                                <Form.Label>Título</Form.Label>
-                                <Form.Control type="text" defaultValue={datos.titulo} onChange={(event) => { setTitulo(event.target.value); }} />
-                            </Form.Group>
+}
 
-                            <Form.Group controlId="exampleForm.ControlTextarea1">
-                                <Form.Label>Descripción</Form.Label>
-                                <Form.Control as="textarea" rows={3} defaultValue={datos.descripcion} onChange={(event) => { setDescripcion(event.target.value); }} />
-                            </Form.Group>
-                            <div className="custom-file mb-3">
-                                <input type="file" className="custom-file-input" id="customFile" onChange={onChange} />
-                                <label className="custom-file-label" htmlFor="customFile">
-                                    {fileName}
-                                </label>
-                            </div>
-                            <div className="buttons">
-                                <Button variant="primary" onClick={onSubmit} >
-                                    Editar aviso
+return (
+    <>{ mostrar && <>
+        <Header></Header>
+        <NavbarITG></NavbarITG>
+        <Container fluid className="mt-5 mb-5">
+            <Row>
+                <Col lg={4} />
+                <Col lg={4}>
+                    <Form id="formAvisos">
+                        {
+                            avisosAdd == 1 && <Confirmacion mensaje="Aviso editado correctamente" />
+                        }
+                        {
+                            avisosAdd == 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
+                        }
+                        <Form.Group controlId="titulo">
+                            <Form.Label>Título</Form.Label>
+                            <Form.Control type="text" value={titulo} onChange={(event) => { const t = event.target.value; handleTitleChange(t); }} />
+                        </Form.Group>
+
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                            <Form.Label>Descripción</Form.Label>
+                            <Form.Control as="textarea" rows={3} value={descripcion} onChange={(event) => { const d = event.target.value; handleDescriptionChange(d); }} />
+                        </Form.Group>
+                        <div className="custom-file mb-3">
+                            <input type="file" className="custom-file-input" id="customFile" onChange={onChange} />
+                            <label className="custom-file-label" htmlFor="customFile">
+                                {fileName}
+                            </label>
+                        </div>
+                        <div className="buttons">
+                            <Button variant="primary" onClick={onSubmit} >
+                                Editar aviso
                                 </Button>
-                                <Button>
-                                    <Link to="/" className="link">
-                                        Regresar
+                            <Button>
+                                <Link to="/" className="link">
+                                    Regresar
                                 </Link>
-                                </Button>
-                            </div>
-                        </Form>
-                    </Col>
-                    <Col lg={4} />
+                            </Button>
+                        </div>
+                    </Form>
+                </Col>
+                <Col lg={4} />
 
-                </Row>
-            </Container>
+            </Row>
+        </Container>
 
 
-            <Footer></Footer>
+        <Footer></Footer>
 
-        </>
-    )
+    </>}</>
+)
 })
 
 export default EditarAviso;

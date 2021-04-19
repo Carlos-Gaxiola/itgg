@@ -124,11 +124,31 @@
 }
 
 .carousel img{
-  max-width: 25% !important;
-  height: auto;
+  max-height: auto;
+  max-width: 100%  !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 .carousel .slide{
   background: rgb(255, 255, 255) !important;
+}
+
+.carruselDeleteDiv{
+  margin-left: 70%;
+  text-align: right;
+  margin-right: 5%;
+  position: relative;
+  bottom: 350px;
+  width: 20%;
+}
+
+.carruselDeleteIcon{
+  transform: scale(1.5);
+}
+
+.eliminarImagenCarousell{
+  text-align: center;
+  color:rgb(12, 23, 177)
 }
 
 .footer{
@@ -331,4 +351,18 @@ hr{
 .carrusel{
   width: auto;
   height: fit-content;
+}
+
+.login-form{
+  width: 540px;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 20px;
+}
+
+.login-form form {
+  margin-bottom: 15px;
+  background: #f7f7f7;
+  box-shadow: 0px 2px 2px rgb(0 0 0 / 30%);
+  padding: 30px;
 }

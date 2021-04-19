@@ -22,18 +22,16 @@ const NavbarITG = () => {
 
   return (
     <>
-      <Navbar className="color-nav" collapseOnSelect expand="lg" bg="primary" variant="dark">
-        <Navbar.Brand href="#home"></Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
+      <Navbar bg="light" expand="lg">
+
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <NavDropdown className="color-nav" title="Inicio" id="collasible-nav-dropdown">
-            </NavDropdown>
-            <NavDropdown className="color-nav" title="Institución" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Dirección</NavDropdown.Item>
+            <NavDropdown title="Institución" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">ITG</NavDropdown.Item>
 
             </NavDropdown>
-            <NavDropdown className="color-nav" title="Oferta académica" id="collasible-nav-dropdown" onClick={() => setCounter(prev => prev + 1)}>
+            <NavDropdown title="Oferta académica" id="basic-nav-dropdown" onClick={() => setCounter(prev => prev + 1)}>
               {
                 ofertaAcademicaList &&
                 ofertaAcademicaList.map((val) => {
@@ -45,18 +43,24 @@ const NavbarITG = () => {
                 })
               }
             </NavDropdown>
-            <NavDropdown className="color-nav" title="Alumnos" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Hackathon</NavDropdown.Item>
+            <NavDropdown title="Alumnos" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Becas México</NavDropdown.Item>
 
             </NavDropdown>
-            <NavDropdown className="color-nav" title="Servicios" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Egresados</NavDropdown.Item>
+            <NavDropdown title="Moodle" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Oportunidades</NavDropdown.Item>
+
+            </NavDropdown>
+            <NavDropdown title="Servicios" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Seguro Social</NavDropdown.Item>
 
             </NavDropdown>
           </Nav>
+
         </Navbar.Collapse>
       </Navbar>
     </>
+
   );
 }
 

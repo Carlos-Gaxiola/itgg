@@ -24,9 +24,23 @@ const Feed = (() => {
      })*/
 
     const [avisosList, setAvisosList] = useState([]);
+    const [mostrar, setMostrar] = useState(false);
+    Axios.defaults.withCredentials = true;
     useEffect(() => {
         Axios.get('http://localhost:3000/getAvisos').then((response) => {
             setAvisosList(response.data);
+        })
+    }, [])
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+            }
         })
     }, [])
 
@@ -60,11 +74,20 @@ const Feed = (() => {
                                                 :
                                                 <p></p>
                                         }
+                                        {mostrar &&
+                                        <>
                                         <Button className="button">
                                             <Link to={`/editarAviso/${val.id}`} className="link">
                                                 Editar
                                             </Link>
                                         </Button>
+                                        <Button className="button">
+                                            <Link to={`/eliminarAviso/${val.id}`} className="link">
+                                                Eliminar
+                                            </Link>
+                                        </Button>
+                                        </>
+                                        }
                                         <p avisoFecha className="avisoFecha">{Moment(val.fecha).format('DD/MM/YYYY')}</p>
                                     </div>
                                     <hr></hr>
@@ -85,11 +108,15 @@ const Feed = (() => {
                 </Row>
 
             </Container>
+            {mostrar &&
+            <>
             <Button className="button">
                 <Link to="/formularioAvisos" className="link">
                     Añadir avisos
                 </Link>
             </Button>
+            </>
+}
         </>
     )
 

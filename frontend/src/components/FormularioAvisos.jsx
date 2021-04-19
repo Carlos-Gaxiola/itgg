@@ -31,7 +31,24 @@ const FormularioAvisos = (() => {
     const [message, setMessage] = useState('');
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const fecha = Moment().format('YYYY/MM/DD')
+    
+const [mostrar, setMostrar] = useState(false);
+Axios.defaults.withCredentials = true;
     var filePathSave = ""
+
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+                window.location = '/'
+            }
+        })
+    }, [])
 
 
     const onChange = (e) => {
@@ -99,10 +116,10 @@ const FormularioAvisos = (() => {
                     <Col lg={4}>
                         <Form id="formAvisos">
                             {
-                                avisosAdd == 1 && <Confirmacion mensaje="Aviso" />
+                                avisosAdd == 1 && <Confirmacion mensaje="Aviso añadido correctamente" />
                             }
                             {
-                                avisosAdd == 2 && <RellenarCampos />
+                                avisosAdd == 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
                             }
                             <Form.Group controlId="titulo">
                                 <Form.Label>Título</Form.Label>

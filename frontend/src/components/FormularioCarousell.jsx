@@ -28,8 +28,24 @@ const FormularioCarousell = (() => {
     const [message, setMessage] = useState('');
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const fecha = Moment().format('YYYY/MM/DD')
+    
+const [mostrar, setMostrar] = useState(false);
+Axios.defaults.withCredentials = true;
+
     var filePathSave = ""
 
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+                window.location = '/'
+            }
+        })
+    }, [])
 
     const onChange = (e) => {
         setFile(e.target.files[0]);
@@ -96,10 +112,10 @@ const FormularioCarousell = (() => {
                     <Col lg={4}>
                         <Form id="formCarousell">
                             {
-                                imagenAdd == 1 && <Confirmacion mensaje="Imagen" />
+                                imagenAdd == 1 && <Confirmacion mensaje="Imagen añadida correctamente" />
                             }
                             {
-                                imagenAdd == 2 && <RellenarCampos mensaje="Favor de llenar todos los campos" />
+                                imagenAdd == 2 && <RellenarCampos mensaje="Favor de añadir la imagen" />
                             }
                             {
                                 imagenAdd == 3 && <RellenarCampos mensaje="Solo se permiten imagenes" />

@@ -31,7 +31,10 @@ const FormularioCarreras = (() => {
     const [message, setMessage] = useState('');
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const fecha = Moment().format('YYYY/MM/DD')
+    const [mostrar, setMostrar] = useState(false);
+    Axios.defaults.withCredentials = true;
     var filePathSave = ""
+
 
 
     const onChange = (e) => {
@@ -43,28 +46,28 @@ const FormularioCarreras = (() => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('file', file);
-        if(file != ""){
-        try {
-            const res = await Axios.post('/uploads-carrera', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+        if (file != "") {
+            try {
+                const res = await Axios.post('/uploads-carrera', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+
+                });
+
+                const { fileName, filePath } = res.data;
+                filePathSave = filePath
+
+                setUploadedFile({ fileName, filePath });
+                setMessage('Archivo subido')
+
+            } catch (err) {
+                if (err.response.status === 500) {
+                    setMessage("Hubo un problema con el servidor");
+                } else {
+                    setMessage(err.response.data.msg);
                 }
-
-            });
-
-            const { fileName, filePath } = res.data;
-            filePathSave = filePath
-
-            setUploadedFile({ fileName, filePath });
-            setMessage('Archivo subido')
-
-        } catch (err) {
-            if (err.response.status === 500) {
-                setMessage("Hubo un problema con el servidor");
-            } else {
-                setMessage(err.response.data.msg);
             }
-        }
         }
 
         if (licenciatura != "" && codigo != "" && objetivo != "" && perfil != "") {
@@ -90,8 +93,21 @@ const FormularioCarreras = (() => {
         }
     }
 
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+                window.location = '/'
+            }
+        })
+    }, [])
+
     return (
-        <>
+        <>{ mostrar && <>
             <Header></Header>
             <NavbarITG></NavbarITG>
             <Container fluid className="mt-5 mb-5">
@@ -151,7 +167,7 @@ const FormularioCarreras = (() => {
 
             <Footer></Footer>
 
-        </>
+        </>}</>
     )
 })
 
