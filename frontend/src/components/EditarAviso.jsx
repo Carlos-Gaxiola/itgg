@@ -29,10 +29,7 @@ const EditarAviso = (() => {
 
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState('Elige un archivo');
-    const [filePathSave, setFilePathSave] = useState("");
-    const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
-    const [uploadPercentage, setUploadPercentage] = useState(0);
     const fecha = Moment().format('YYYY/MM/DD')
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;

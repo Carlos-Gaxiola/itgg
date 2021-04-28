@@ -107,6 +107,37 @@ app.post('/createCarousell', (req, res) => {
 
 })
 
+app.post('/createMoodle', (req, res) => {
+    const titulo = req.body.titulo;
+    const servidor = req.body.servidor;
+
+    db.query('INSERT INTO moodle (titulo,servidor) VALUES (?,?)',
+        [titulo, servidor],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Values inserted");
+            }
+        });
+
+
+})
+
+app.post('/editMoodle/:id', (req, res) => {
+    const titulo = req.body.titulo;
+    const servidor = req.body.servidor;
+
+    const query = 'UPDATE moodle SET titulo = ?, servidor = ? WHERE id = ?'
+    db.query(query, [titulo, servidor, req.params.id], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
 
 //Upload endpoint
 app.post('/uploads', (req, res) => {
@@ -260,6 +291,28 @@ app.get('/getCarreras', (req, res) => {
     })
 })
 
+app.get('/getMoodle', (req, res) => {
+    db.query('SELECT * FROM moodle', (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/getMoodleData/:id', (req, res) => {
+    const query = 'SELECT * FROM moodle WHERE id = ?'
+    db.query(query, req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+
 app.get('/getOfertaAcademica/:id', (req, res) => {
     const query = 'SELECT * FROM ofertaacademica WHERE id = ?';
     db.query(query, req.params.id, (err, result) => {
@@ -273,6 +326,16 @@ app.get('/getOfertaAcademica/:id', (req, res) => {
 
 app.get('/getCarousell', (req, res) => {
     db.query('SELECT id, file FROM carousell', (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/getMoodle', (req, res) => {
+    db.query('SELECT * FROM moodle', (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -406,6 +469,17 @@ app.get('/deleteAviso/:id', (req, res) => {
     })
 })
 
+app.get('/deleteMoodle/:id', (req, res) => {
+    const query = 'DELETE FROM moodle WHERE id = ?';
+    db.query(query, req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
 app.get('/getDatosCarrera/:id', (req, res) => {
     const query = 'SELECT * FROM ofertaacademica WHERE id = ?';
     db.query(query, req.params.id, (err, result) => {
@@ -518,6 +592,23 @@ app.get('/deleteCarrera/:id', (req, res) => {
     })
 })
 
+app.post('/sendContacto', (req, res) => {
+    const asunto = req.body.asunto;
+    const mensaje = req.body.mensaje;
+    const correo = req.body.correo;
+    transporter.sendMail({
+        to: 'carlinos1212@gmail.com',
+        from: 'arcadioramosisw@gmail.com',
+        subject: asunto,
+        html: `
+        <p>${mensaje}</p>
+        <br>
+        <p>Correo enviado desde: ${correo}</p>
+        `
+    })
+    res.json({ mensaje: "todo salió bien" });
+    });
+
 
 //Registro de usuarios en la base de datos
 app.post('/registrar', (req, res) => {
@@ -539,7 +630,7 @@ app.post('/registrar', (req, res) => {
                     console.log(err)
                 } else {
                     transporter.sendMail({
-                        to: 'carlinos1212@gmail.com',
+                        to: email,
                         from: 'arcadioramosisw@gmail.com',
                         subject: 'Registro completado con éxito',
                         html: '<h1>Usted se ha registrado</h1>'
@@ -577,12 +668,12 @@ app.get('/getToken', (req, res) => {
 
 app.post('/checkEmailDuplicated', async (req, res) => {
     const email = req.body.email;
-    
+
     await db.query('SELECT * FROM usuarios where email = ?',
         email,
         (err, result) => {
             if (err) {
-                res.send({err})
+                res.send({ err })
             }
             if (result.length > 0) {
                 const user = result[0];
@@ -591,8 +682,8 @@ app.post('/checkEmailDuplicated', async (req, res) => {
                     duplicated: true,
                     mensaje: "El correo está en uso"
                 })
-               
-            }else{
+
+            } else {
                 res.json({
                     mensaje: "El correo no está en uso",
                     duplicated: false
@@ -724,7 +815,7 @@ app.post('/newPassword', async (req, res) => {
             const fechaAhoritaa = moment(fechaAhorita).format();
             const parseadoToken = Date.parse(expireToken);
             const parseadoFechaAhorita = Date.parse(fechaAhoritaa);
-            const parseadoFechaAhoritaa =  moment(parseadoFechaAhorita).format();
+            const parseadoFechaAhoritaa = moment(parseadoFechaAhorita).format();
 
 
 
@@ -736,7 +827,7 @@ app.post('/newPassword', async (req, res) => {
                             mensaje: "Hubo un error en el hasheo"
                         })
                     }
-                    
+
                     if (parseadoToken > parseadoFechaAhorita) {
                         const query = 'UPDATE usuarios SET password = ? WHERE resetToken = ? AND expireToken >' + "'" + parseadoFechaAhoritaa + "'";
                         await db.query(query, [hash, token], (err, result) => {

@@ -56,37 +56,56 @@ const Feed = (() => {
 
             </Container>
             <Container fluid className="wrapper">
-                <Row >
-                    <Col lg={1}></Col>
-                    <Col lg={8} className="contenedor">
+                <Row>
+                    <Col lg={3} className="transparent"></Col>
+                    <Col lg={6} className="contenedor">
                         {
                             avisosList &&
                             avisosList.map((val, key) => {
+                                var isImage = false
+                                if ((/\.(jpg|png|gif)$/i).test(val.file)) {
+                                        isImage = true
+                                    } else {
+                                        isImage = false
+                                    }
                                 return <div className="avisos">
                                     <h3 key={val.id} className="avisoTitulo">{val.titulo}</h3>
                                     <p>{val.descripcion}</p>
-                                    <div className="avisoFileDate">
                                         {
-                                            val.file ?
+                                            isImage === true &&
+                                                val.file ?
+                                                <div className="imgDiv">
+                                                    <a href={val.file} target="_blank">
+                                                        <img src={val.file} className="img-fluid img-thumbnail" width="200px" height="200px" />
+                                                    </a>
+
+                                                </div>
+                                                :
+                                                <p></p>
+                                        }
+                                        {
+                                            isImage === false &&
+                                                val.file ?
                                                 <Link to={val.file} target="_blank">
-                                                    <PictureAsPdf className="avisoFile"></PictureAsPdf>
+                                                    Ver archivo adjunto   <PictureAsPdf className="avisoFile"></PictureAsPdf>
                                                 </Link>
                                                 :
                                                 <p></p>
                                         }
+                                    <div className="avisoFileDate">
                                         {mostrar &&
-                                        <>
-                                        <Button className="button">
-                                            <Link to={`/editarAviso/${val.id}`} className="link">
-                                                Editar
+                                            <>
+                                                <Button className="button">
+                                                    <Link to={`/editarAviso/${val.id}`} className="link">
+                                                        Editar
                                             </Link>
-                                        </Button>
-                                        <Button className="button">
-                                            <Link to={`/eliminarAviso/${val.id}`} className="link">
-                                                Eliminar
+                                                </Button>
+                                                <Button className="button">
+                                                    <Link to={`/eliminarAviso/${val.id}`} className="link">
+                                                        Eliminar
                                             </Link>
-                                        </Button>
-                                        </>
+                                                </Button>
+                                            </>
                                         }
                                         <p avisoFecha className="avisoFecha">{Moment(val.fecha).format('DD/MM/YYYY')}</p>
                                     </div>
@@ -109,14 +128,14 @@ const Feed = (() => {
 
             </Container>
             {mostrar &&
-            <>
-            <Button className="button">
-                <Link to="/formularioAvisos" className="link">
-                    Añadir avisos
+                <>
+                    <Button className="button">
+                        <Link to="/formularioAvisos" className="link">
+                            Añadir avisos
                 </Link>
-            </Button>
-            </>
-}
+                    </Button>
+                </>
+            }
         </>
     )
 

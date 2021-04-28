@@ -179,7 +179,7 @@
   padding: 40px 40px;
   overflow: auto;
   max-height: 400px;
-  margin-bottom: 5px;  
+  margin-bottom: 5px;
 }
 
 .individualFeed{
@@ -191,8 +191,14 @@
 .wrapper{
   margin-bottom: 20px;
 }
+
 .wrapper h1{
   border-bottom: 4px solid #F87E0C;
+}
+
+.imgDiv{
+  position: relative;
+  margin-left: -30%;
 }
 
 .avisos{
@@ -329,7 +335,7 @@ hr{
 }
 
 .avisoFile{
-  margin-left: 10px;
+  margin: auto;
   color: red;
   transform: scale(1.5);
 }
@@ -337,6 +343,10 @@ hr{
 .avisoFileDate{
   display: flex;
   justify-content: space-between;
+}
+
+.avisoFileDate button{
+  max-height: 50px;
 }
 
 .perfilEgreso{
@@ -365,4 +375,14 @@ hr{
   background: #f7f7f7;
   box-shadow: 0px 2px 2px rgb(0 0 0 / 30%);
   padding: 30px;
+}
+
+.moodle{
+  text-align: center;
+}
+
+.map{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

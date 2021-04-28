@@ -27,6 +27,12 @@ const OfertaAcademica = () => {
             {
                 datosCarrera &&
                 datosCarrera.map((val) => {
+                    var isImage = false
+                    if ((/\.(jpg|png|gif)$/i).test(val.file)) {
+                        isImage = true
+                    } else {
+                        isImage = false
+                    }
                     return <div className="ofertaContainer">
                         <container fluid className="mt-5 mb-5">
                             <div className="row">
@@ -40,10 +46,23 @@ const OfertaAcademica = () => {
                                     <h3>Perfil de egreso</h3>
                                     <p className="perfilEgreso">{val.perfil}</p>
                                     {
-                                        val.file ?
+                                        isImage === false &&
+                                            val.file ?
                                             <Link to={val.file} target="_blank">
                                                 Ver plan de estudios<PictureAsPdf className="avisoFile"></PictureAsPdf>
                                             </Link>
+                                            :
+                                            <p></p>
+                                    }
+                                    {
+                                        isImage === true &&
+                                            val.file ?
+                                            <div>
+                                                <a href={val.file} target="_blank">
+                                                    <img src={val.file} className="img-fluid img-thumbnail" width="200px" height="200px" />
+                                                </a>
+
+                                            </div>
                                             :
                                             <p></p>
                                     }

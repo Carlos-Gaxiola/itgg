@@ -10,9 +10,11 @@ import '../../src/App.css'
 
 const CarouselITG = () => {
     const [counter, setCounter] = useState(0)
+    const [eliminar, setEliminar] = useState(false)
     const [actualId, setActualId] = useState(0)
     const [carousellItems, setCarousellItems] = useState([])
-    const [eliminar, setEliminar] = useState(false)
+    const [mostrar, setMostrar] = useState(false);
+    Axios.defaults.withCredentials = true;
 
     useEffect(() => {
         Axios.get('http://localhost:3000/getCarousell').then((response) => {
@@ -20,12 +22,30 @@ const CarouselITG = () => {
         })
     }, [counter])
 
+    useEffect(() => {
+        if(counter>0){
+            setEliminar(true)
+        }
+    }, [counter])
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+            }
+        })
+    }, [])
+
     
 
     const onClickHandler = (e, id) => {
         e.preventDefault();
         setActualId(id)
-        setEliminar(true)
+        setCounter(prev => prev+1)
     }
 
     return (
@@ -36,11 +56,13 @@ const CarouselITG = () => {
                     carousellItems.map((val) => {
                         return <div className="carrusel">
                             <img src={val.file} alt="imagen" />
+                            {mostrar &&
                             <div className="carruselDeleteDiv">
                                 <Button onClick={(e) => onClickHandler(e, val.id)}>
                                     <Delete className="carruselDeleteIcon" />
                                 </Button>
                             </div>
+                            }
                         </div>
                     })
                 }
@@ -48,7 +70,7 @@ const CarouselITG = () => {
             <div>
                 {
                     eliminar &&
-                    <PruebaModal actualId={actualId} firstOpen={true}/>
+                    <PruebaModal actualId={actualId} change={Math.random()}/>
                 }
             </div>
 

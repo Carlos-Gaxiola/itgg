@@ -17,11 +17,11 @@ class NavbarContacto extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ml-auto">
-              <Nav.Link className="color-nav-contacto" href="#features">Contacto</Nav.Link>
-              <Nav.Link className="color-nav-contacto" href="#features">Mapa del sitio</Nav.Link>
-              <Nav.Link className="color-nav-contacto" href="#features">SII</Nav.Link>
+              <Nav.Link className="color-nav-contacto" href="/contacto">Contacto</Nav.Link>
+              <Nav.Link className="color-nav-contacto" href="/mapaSitio">Mapa del sitio</Nav.Link>
+              <Nav.Link className="color-nav-contacto" href="http://187.243.249.26:1000/">SII</Nav.Link>
               <Nav.Link className="color-nav-contacto" href="#features">MOODLE</Nav.Link>
-              <Nav.Link className="color-nav-contacto" href="#features">Correo institucional</Nav.Link>
+              <Nav.Link className="color-nav-contacto" href="http://mail.Tecnm.mx" target="_blank">Correo institucional</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

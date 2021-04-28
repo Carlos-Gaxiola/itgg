@@ -6,31 +6,30 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 import Axios from 'axios'
-import CarousellITG from './CarouselITG'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
-export default function AlertDialogSlide(props) {
-    var firstOpen = props.firstOpen;
+export default function AlertDialogSlide({ actualId, change }) {
     const [eliminado, setEliminado] = useState(false)
-    const [open, setOpen] = useState(props.open);
-    
+    const [open, setOpen] = useState(true);
+
     useEffect(() => {
         handleClickOpen()
-    }, [props.actualId, firstOpen])
+    }, [change])
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleEliminar = () => {
-        Axios.get('http://localhost:3000/deleteCarousell/' + props.actualId, {
+        Axios.get('http://localhost:3000/deleteCarousell/' + actualId, {
         }).then(() => {
             setEliminado(true)
             handleClose()
+            window.location='/'
         })
     };
 
