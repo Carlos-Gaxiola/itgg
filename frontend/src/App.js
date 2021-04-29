@@ -20,6 +20,12 @@ import MapaDelSitio from './components/MapaDelSitio'
 import CrudMoodle from './components/CrudMoodle'
 import EditarMoodle from './components/EditarMoodle'
 import EliminarMoodle from './components/EliminarMoodle'
+import SeccionServicios from './components/SeccionServicios'
+import SeccionIndividual from './components/SeccionIndividual'
+import EditarServicio from './components/EditarServicio'
+import SeccionAlumnos from './components/SeccionAlumnos'
+import SeccionIndividualAlumnos from './components/SeccionIndividualAlumnos'
+import EditarAlumno from './components/EditarAlumno'
 
 import './App.css';
 import Contacto from './components/Contacto'
@@ -93,6 +99,24 @@ function App() {
                 </Route>
                 <Route path="/menu">
                     <Menu />
+                </Route>
+                <Route path="/formularioServicios">
+                    <SeccionServicios/>
+                </Route>
+                <Route path="/ServiciosIndividual/:id">
+                    <SeccionIndividual />
+                </Route>
+                <Route path="/editarServicio/:id">
+                    <EditarServicio/>
+                </Route>
+                <Route path="/formularioAlumnos">
+                    <SeccionAlumnos/>
+                </Route>
+                <Route path="/AlumnosIndividual/:id">
+                    <SeccionIndividualAlumnos/>
+                </Route>
+                <Route path="/editarAlumno/:id">
+                    <EditarAlumno/>
                 </Route>
             </Switch>
         </Router>

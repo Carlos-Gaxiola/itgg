@@ -854,6 +854,406 @@ app.post('/newPassword', async (req, res) => {
         })
 })
 
+app.get('/logout',(req,res)=>{
+    res.clearCookie('access-token');
+    res.json({
+        mensaje: 'Sesión cerrada con éxito',
+        logout: true
+    });
+    
+})
+
+app.post('/publicarServicio',async(req,res)=>{
+    const titulo = req.body.titulo;
+    const value = req.body.value;
+    const file = req.body.file;
+
+   await db.query(
+        "INSERT INTO servicios(titulo,contenido,file) VALUES (?,?,?)",
+        [titulo, value,file],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json({ mensaje: "Se ha añadido con éxito",
+            file: file });
+            }
+        }
+    );
+
+})
+
+app.get('/getServicio',async(req,res)=>{
+    const query = 'SELECT * FROM servicios';
+   await db.query(query,(err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result)
+        }
+    })
+})
+
+app.get('/getServicioIndividual/:id',(req,res) => {
+    const query = 'SELECT * FROM servicios WHERE id = ?';
+    db.query(query, req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json({
+                result,
+                mensaje: "ando acá",
+                id: req.params.id
+            });
+        }
+    })
+})
+
+app.get('/getAlumnoIndividual/:id',(req,res) => {
+    const query = 'SELECT * FROM alumnos WHERE id = ?';
+    db.query(query, req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json({
+                result,
+                mensaje: "ando acá",
+                id: req.params.id
+            });
+        }
+    })
+})
+
+app.post('/editarServicio',async(req,res)=>{
+    const id = req.body.id;
+    const titulo = req.body.titulo;
+    const value = req.body.value;
+    const file = req.body.file
+    const query = 'UPDATE servicios SET titulo = ?, contenido = ?, file = ? WHERE id = ?';
+   await db.query(query, [titulo,value, file, id], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json({
+                mensaje: 'Se ha editado con éxito',
+                result: result
+            });
+        }
+    })
+})
+
+
+app.post('/uploadsServicios-editDel/:id', (req, res) => {
+    const query = 'SELECT file FROM servicios WHERE id = ?'
+    db.query(query, req.params.id, (err, result) => {
+        if (result[0].file !== "") {
+            const query2 = 'SELECT count(*) AS count FROM servicios WHERE file = ?'
+            db.query(query2, result[0].file, (err, result2) => {
+                if (result2[0].count < 2) {
+                    fs.unlinkSync(`${__dirname}/.././frontend/public${result[0].file}`)
+                    res.json({ filePath: "" })
+                } else {
+                    res.json({ filePath: "" })
+                }
+            })
+        } else {
+            res.json({ filePath: "" })
+        }
+    })
+})
+app.post('/uploads-editServicio/:id', (req, res) => {
+    const file = req.files.file;
+    if ('replaceAll' in String.prototype) {
+        const fileN = file.name.replaceAll(" ", "-")
+    } else {
+        String.prototype.replaceAll = function (find, replace) {
+            let exp = new RegExp(find, 'g');
+            return this.replace(exp, replace);
+        };
+    }
+    const fileN = file.name.replaceAll(" ", "-")
+    const filePath = "/uploads-servicios/" + fileN
+    var exist = false;
+
+    const query = 'SELECT file FROM servicios'
+    db.query(query, (err, result) => {
+        const query2 = 'SELECT file FROM servicios WHERE id = ? LIMIT 1'
+        db.query(query2, req.params.id, (err, result2) => {
+            result.map((val) => {
+                if (val.file === filePath) {
+                    exist = true;
+                }
+            })
+            if (exist) {
+                const queryCount = 'SELECT count(*) AS count FROM servicios WHERE file = ?'
+                db.query(queryCount, result2[0].file, (err, resultCount) => {
+                    if (resultCount[0].count == 1 && result2[0].file != "" && result2[0].file != filePath) {
+                        fs.unlinkSync(`${__dirname}/.././frontend/public${result2[0].file}`)
+                    }
+                })
+                res.json({ fileName: file.name, filePath: filePath })
+            }
+            else {
+                if (result2[0].file != "") {
+                    const query3 = 'SELECT count(*) AS count FROM servicios WHERE file = ?'
+                    db.query(query3, result2[0].file, (err, result3) => {
+                        if (result3[0].count == 1 && result2[0].file != "") {
+                            fs.unlinkSync(`${__dirname}/.././frontend/public${result2[0].file}`)
+                        }
+                    })
+                }
+
+                file.mv(`${__dirname}/.././frontend/public/uploads-servicios/${fileN}`, err => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send(err);
+                    }
+                    res.json({ fileName: file.name, filePath: filePath })
+                })
+            }
+        })
+    })
+})
+
+app.get('/deleteServicio/:id', (req, res) => {
+    const query = 'DELETE FROM servicios WHERE id = ?';
+    db.query(query, req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/getAlumnos', (req, res) => {
+    db.query('SELECT * FROM Alumnos ORDER BY id DESC', (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.post('/uploadsServicios', (req, res) => {
+    const file = req.files.file;
+    if ('replaceAll' in String.prototype) {
+        const fileN = file.name.replaceAll(" ", "-")
+    } else {
+        String.prototype.replaceAll = function (find, replace) {
+            let exp = new RegExp(find, 'g');
+            return this.replace(exp, replace);
+        };
+    }
+    const fileN = file.name.replaceAll(" ", "-")
+    const filePath = "/uploads-servicios/" + fileN
+    var exist = false;
+
+    db.query('SELECT file FROM servicios', (err, result) => {
+        result.map((val) => {
+            if (val.file === filePath) {
+                exist = true;
+            }
+        })
+        if (exist) {
+            res.json({ fileName: file.name, filePath: filePath })
+        }
+        else {
+            if (req.files === null) {
+                return res.status(400).json({ msg: 'Ningún archivo fue subido' });
+
+            }
+
+
+            file.mv(`${__dirname}/.././frontend/public/uploads-servicios/${fileN}`, err => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send(err);
+                }
+                res.json({ fileName: file.name, filePath: filePath })
+            })
+        }
+    })
+
+
+})
+
+app.post('/uploadsAlumnos', (req, res) => {
+    const file = req.files.file;
+    if ('replaceAll' in String.prototype) {
+        const fileN = file.name.replaceAll(" ", "-")
+    } else {
+        String.prototype.replaceAll = function (find, replace) {
+            let exp = new RegExp(find, 'g');
+            return this.replace(exp, replace);
+        };
+    }
+    const fileN = file.name.replaceAll(" ", "-")
+    const filePath = "/uploads-alumnos/" + fileN
+    var exist = false;
+
+    db.query('SELECT file FROM alumnos', (err, result) => {
+        result.map((val) => {
+            if (val.file === filePath) {
+                exist = true;
+            }
+        })
+        if (exist) {
+            res.json({ fileName: file.name, filePath: filePath })
+        }
+        else {
+            if (req.files === null) {
+                return res.status(400).json({ msg: 'Ningún archivo fue subido' });
+
+            }
+
+
+            file.mv(`${__dirname}/.././frontend/public/uploads-alumnos/${fileN}`, err => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send(err);
+                }
+                res.json({ fileName: file.name, filePath: filePath })
+            })
+        }
+    })
+
+
+})
+
+app.post('/publicarAlumno',async(req,res)=>{
+    const titulo = req.body.titulo;
+    const value = req.body.value;
+    const file = req.body.file;
+
+   await db.query(
+        "INSERT INTO alumnos(titulo,contenido,file) VALUES (?,?,?)",
+        [titulo, value,file],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json({ mensaje: "Se ha añadido con éxito",
+            file: file });
+            }
+        }
+    );
+
+})
+app.get('/getAlumnoIndividual/:id',(req,res) => {
+    const query = 'SELECT * FROM alumnos WHERE id = ?';
+    db.query(query, req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/deleteAlumno/:id', (req, res) => {
+    const query = 'DELETE FROM alumnos WHERE id = ?';
+    db.query(query, req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json({
+                result,
+                mensaje: 'Se ha eliminado con éxito el artículo'
+            })
+        }
+    })
+})
+app.post('/uploadsAlumnos-editDel/:id', (req, res) => {
+    const query = 'SELECT file FROM alumnos WHERE id = ?'
+    db.query(query, req.params.id, (err, result) => {
+        if (result[0].file !== "") {
+            const query2 = 'SELECT count(*) AS count FROM alumnos WHERE file = ?'
+            db.query(query2, result[0].file, (err, result2) => {
+                if (result2[0].count < 2) {
+                    fs.unlinkSync(`${__dirname}/.././frontend/public${result[0].file}`)
+                    res.json({ filePath: "" })
+                } else {
+                    res.json({ filePath: "" })
+                }
+            })
+        } else {
+            res.json({ filePath: "" })
+        }
+    })
+})
+app.post('/editarAlumno',async(req,res)=>{
+    const id = req.body.id;
+    const titulo = req.body.titulo;
+    const value = req.body.value;
+    const file = req.body.file
+    const query = 'UPDATE alumnos SET titulo = ?, contenido = ?, file = ? WHERE id = ?';
+   await db.query(query, [titulo,value, file, id], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json({
+                mensaje: 'Se ha editado con éxito',
+                result: result
+            });
+        }
+    })
+})
+
+app.post('/uploads-editAlumno/:id', (req, res) => {
+    const file = req.files.file;
+    if ('replaceAll' in String.prototype) {
+        const fileN = file.name.replaceAll(" ", "-")
+    } else {
+        String.prototype.replaceAll = function (find, replace) {
+            let exp = new RegExp(find, 'g');
+            return this.replace(exp, replace);
+        };
+    }
+    const fileN = file.name.replaceAll(" ", "-")
+    const filePath = "/uploads-alumnos/" + fileN
+    var exist = false;
+
+    const query = 'SELECT file FROM alumnos'
+    db.query(query, (err, result) => {
+        const query2 = 'SELECT file FROM alumnos WHERE id = ? LIMIT 1'
+        db.query(query2, req.params.id, (err, result2) => {
+            result.map((val) => {
+                if (val.file === filePath) {
+                    exist = true;
+                }
+            })
+            if (exist) {
+                const queryCount = 'SELECT count(*) AS count FROM alumnos WHERE file = ?'
+                db.query(queryCount, result2[0].file, (err, resultCount) => {
+                    if (resultCount[0].count == 1 && result2[0].file != "" && result2[0].file != filePath) {
+                        fs.unlinkSync(`${__dirname}/.././frontend/public${result2[0].file}`)
+                    }
+                })
+                res.json({ fileName: file.name, filePath: filePath })
+            }
+            else {
+                if (result2[0].file != "") {
+                    const query3 = 'SELECT count(*) AS count FROM alumnos WHERE file = ?'
+                    db.query(query3, result2[0].file, (err, result3) => {
+                        if (result3[0].count == 1 && result2[0].file != "") {
+                            fs.unlinkSync(`${__dirname}/.././frontend/public${result2[0].file}`)
+                        }
+                    })
+                }
+
+                file.mv(`${__dirname}/.././frontend/public/uploads-alumnos/${fileN}`, err => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send(err);
+                    }
+                    res.json({ fileName: file.name, filePath: filePath })
+                })
+            }
+        })
+    })
+})
 
 
 //app.use(myConn(mysql, conn, 'single'));
