@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Delete from '@material-ui/icons/Delete'
 import Axios from 'axios'

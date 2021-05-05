@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
+import { BrowserRouter as Router, Switch, Route, Link, useHistory } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Axios from 'axios'
@@ -18,8 +16,13 @@ const NavbarITG = () => {
   const [serviciosList, setServiciosList] = useState([]);
   const [counterAlumnos, setCounterAlumno] = useState(0)
   const [alumnosList, setAlumnosList] = useState([]);
+  const [counterInstitucion, setCounterInstitucion] = useState(0)
+  const [institucionList, setInstitucionList] = useState([]);
   const [counterMoodle, setCounterMoodle] = useState(0)
   const [moodleList, setMoodleList] = useState([]);
+  const [mostrar, setMostrar] = useState(false);
+  const history = useHistory();
+  Axios.defaults.withCredentials = true;
 
   useEffect(() => {
     Axios.get('http://localhost:3001/getCarreras').then((response) => {
@@ -44,11 +47,48 @@ const NavbarITG = () => {
       setMoodleList(response.data);
     })
   }, [counterMoodle])
+  useEffect(() => {
+    Axios.get('http://localhost:3001/getInstitucion').then((response) => {
+      setInstitucionList(response.data);
+      console.log(response.data)
+    })
+  }, [counterInstitucion])
+
+
+  useEffect(() => {
+    Axios.get('http://localhost:3001/getToken', {
+    }).then((response) => {
+      if (response.data.authorized === true) {
+        console.log("estoy autorizado " + response.data.authorized)
+        setMostrar(true);
+      } else {
+        console.log("no estoy autorizado" + response.data.authorized)
+      }
+    })
+  }, [])
 
   const onClickHandler = (e, s) => {
     e.preventDefault()
     window.open(s, "_blank")
   }
+  const onClickInicio = (e, s) => {
+    e.preventDefault()
+    history.push('/')
+  }
+
+  const cerrarSesion = () => {
+    Axios.get('http://localhost:3001/logout', {
+    }).then((response) => {
+      history.push('/')
+    })
+  }
+  const iniciarSesion = () => {
+    history.push('/login')
+  }
+  const menu = () => {
+    history.push('/menu')
+  }
+
 
   return (
     <>
@@ -57,8 +97,18 @@ const NavbarITG = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <NavDropdown title="Institución" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">ITG</NavDropdown.Item>
+            <Nav.Link onClick={onClickInicio}>Inicio</Nav.Link>
+            <NavDropdown title="Institución" id="basic-nav-dropdown" onClick={() => setCounter(prev => prev + 1)}>
+              {
+                institucionList &&
+                institucionList.map((val) => {
+                  return <NavDropdown.Item>
+                    <Link to={`/institucionindividual/${val.id}`}>
+                      {val.titulo}
+                    </Link>
+                  </NavDropdown.Item>
+                })
+              }
 
             </NavDropdown>
             <NavDropdown title="Oferta académica" id="basic-nav-dropdown" onClick={() => setCounter(prev => prev + 1)}>
@@ -91,7 +141,7 @@ const NavbarITG = () => {
                 moodleList &&
                 moodleList.map((val) => {
                   return <NavDropdown.Item onClick={(e) => onClickHandler(e, val.servidor)}>
-                      {val.titulo}
+                    {val.titulo}
                   </NavDropdown.Item>
                 })
               }
@@ -113,6 +163,15 @@ const NavbarITG = () => {
 
 
           </Nav>
+          {mostrar &&
+            <Button variant="outline-primary mr-2" onClick={(e) => { e.preventDefault(); menu() }}>Menu</Button>}
+          {mostrar &&
+            <Button variant="outline-primary" onClick={(e) => { e.preventDefault(); cerrarSesion() }}>Cerrar sesión</Button>
+          }
+          {!mostrar &&
+            <Button variant="outline-primary" onClick={(e) => { e.preventDefault(); iniciarSesion() }}>Iniciar sesión</Button>
+          }
+
 
         </Navbar.Collapse>
       </Navbar>

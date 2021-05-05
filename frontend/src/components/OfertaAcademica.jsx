@@ -13,11 +13,26 @@ import '../../src/App.css'
 const OfertaAcademica = () => {
     const { id } = useParams();
     const [datosCarrera, setDatosCarrera] = useState([]);
+    const [mostrar, setMostrar] = useState(false);
+    Axios.defaults.withCredentials = true;
+
     useEffect(() => {
         Axios.get('http://localhost:3000/getOfertaAcademica/' + id).then((response) => {
             setDatosCarrera(response.data);
         })
     }, [id])
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+            }
+        })
+    }, [])
 
     return (
         <>
@@ -67,6 +82,7 @@ const OfertaAcademica = () => {
                                             <p></p>
                                     }
                                 </div>
+                                {mostrar &&<>
                                 <Button className="button">
                                     <Link to={`/editarCarrera/${val.id}`} className="link">
                                         Editar oferta academica
@@ -77,6 +93,7 @@ const OfertaAcademica = () => {
                                         Eliminar oferta academica
                                     </Link>
                                 </Button>
+                                </>}
                                 <div className="col-lg-1" />
                             </div>
                         </container>

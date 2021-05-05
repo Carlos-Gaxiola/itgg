@@ -16,7 +16,7 @@ const schema = yup.object().shape({
 
 
 });
-const EditarAlumno = (() => {
+const EditarInstitucion = (() => {
     const { register, handleSubmit, errors } = useForm({
         resolver: yupResolver(schema),
 
@@ -25,10 +25,11 @@ const EditarAlumno = (() => {
     const [value, setValue] = useState('');
     const [titulo, setTitulo] = useState('');
     const [mensaje, setMensaje] = useState('');
-    const [mensajeExito, setMensajeExito] = useState('');
     const [file, setFile] = useState('');
+    const [mensajeExito, setMensajeExito] = useState('');
+    const [mensajeError, setMensajeError] = useState('');
+    const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
-    const [uploadedFile, setUploadedFile] = useState('')
     const [fileName, setFileName] = useState('Elige un archivo');
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
@@ -43,19 +44,20 @@ const EditarAlumno = (() => {
         setFileName(e.target.files[0].name);
     }
 
-    const updateAlumno = (filePath) => {
+    const updateInstitucion = (filePath) => {
         
-        Axios.post('http://localhost:3001/editarAlumno', {
+        Axios.post('http://localhost:3001/editarInstitucion', {
             id: id,
             titulo: titulo,
             value: value,
             file: filePath
         }).then((response) => {
-            console.log(response.data);
-            console.log(filePath+"soy filepath")
+            
             setMensajeExito(response.data.mensaje);
-            setTimeout(function () { setMensajeExito('') }, 5000);
+            setMensajeError(response.data.mensajeError);
             setFileName("Elige un archivo")
+            setTimeout(function () { setMensajeExito('') }, 5000);
+            setTimeout(function () { setMensajeError('') }, 5000);
             setFile("")
 
 
@@ -71,15 +73,15 @@ const EditarAlumno = (() => {
             formData.append('file', file);
 
             if (file === "") {
-                Axios.post(`/uploadsAlumnos-editDel/${id}`).then((response) => {
+                Axios.post(`/uploadsInstitucion-editDel/${id}`).then((response) => {
                     const { filePath } = response.data;
-                    console.log(response.data)
-                    updateAlumno(filePath)
+                    
+                    updateInstitucion(filePath)
                 })
             }
             if (file !== "") {
                 try {
-                    const res = await Axios.post(`/uploads-editAlumno/${id}`, formData, {
+                    const res = await Axios.post(`/uploads-editInstitucion/${id}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         }
@@ -92,7 +94,7 @@ const EditarAlumno = (() => {
 
                     setUploadedFile({ fileName, filePath });
                     setMessage('Archivo subido')
-                    updateAlumno(filePath);
+                    updateInstitucion(filePath);
 
                 } catch (err) {
                     if (err.response.status === 500) {
@@ -111,18 +113,17 @@ const EditarAlumno = (() => {
 
 
         useEffect(() => {
-            Axios.get('http://localhost:3001/getAlumnoIndividual/' + id).then((response) => {
+            Axios.get('http://localhost:3001/getInstitucionIndividual/' + id).then((response) => {
                 
-                console.log(response)
-                setTitulo(response.data.result[0].titulo);
-                setValue(response.data.result[0].contenido);
+                setValue(response.data[0].contenido);
+                
+                setTitulo(response.data[0].titulo)
                 
                 
 
 
             })
         }, [id])
-
         useEffect(() => {
             Axios.get('http://localhost:3001/getToken', {
             }).then((response) => {
@@ -138,7 +139,7 @@ const EditarAlumno = (() => {
 
 
     return (
-        <>{mostrar && <>
+        <>{mostrar&&<>
             <Header></Header>
             <NavbarITG></NavbarITG>
 
@@ -146,7 +147,7 @@ const EditarAlumno = (() => {
                 <div ckassName="row">
                     <div className="lg-3" />
                     <div className="lg-9 mt-5">
-                        <h1 className="mb-3">Formulario alumnos</h1>
+                        <h1 className="mb-3">Formulario Institucion</h1>
                         {mensajeExito !== '' && <p className='alert alert-success'>{mensajeExito}</p>}
                         <div className="form-group">
                             <h2>Título</h2>
@@ -174,6 +175,7 @@ const EditarAlumno = (() => {
 
                         />
                         {mensaje !== '' && <p className='alert alert-danger'>{mensaje}</p>}
+                        
 
                         <div className="contenido-servicio mt-3 mb-3"><h1>Previsualización</h1>{ReactHtmlParser(value)}</div>
 
@@ -181,7 +183,8 @@ const EditarAlumno = (() => {
 
                     <div className="lg-3">
                         <button className="mt-3" onClick={handleSubmit(onSubmit)}>Editar</button>
-                        {mensajeExito !== '' && <p className='alert alert-success'>{mensajeExito}</p>}
+                        {mensajeExito === 'Se ha editado con éxito' && <p className='alert alert-success'>{mensajeExito}</p>}
+                        {mensajeError === 'ha ocurrido un error' && <p className='alert alert-danger'>{mensajeError}</p>}
                     </div>
                 </div>
             </div>
@@ -192,4 +195,4 @@ const EditarAlumno = (() => {
 
 })
 
-export default EditarAlumno;
+export default EditarInstitucion;

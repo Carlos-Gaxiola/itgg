@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
-import Button from 'react-bootstrap/Button'
-import NavDropdown from 'react-bootstrap/NavDropdown'
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../src/App.css'
 
@@ -20,7 +16,6 @@ class NavbarContacto extends Component {
               <Nav.Link className="color-nav-contacto" href="/contacto">Contacto</Nav.Link>
               <Nav.Link className="color-nav-contacto" href="/mapaSitio">Mapa del sitio</Nav.Link>
               <Nav.Link className="color-nav-contacto" href="http://187.243.249.26:1000/">SII</Nav.Link>
-              <Nav.Link className="color-nav-contacto" href="#features">MOODLE</Nav.Link>
               <Nav.Link className="color-nav-contacto" href="http://mail.Tecnm.mx" target="_blank">Correo institucional</Nav.Link>
             </Nav>
           </Navbar.Collapse>

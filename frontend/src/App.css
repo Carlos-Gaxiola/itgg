@@ -104,7 +104,7 @@
   text-align: center;
   vertical-align: text-bottom;
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 
@@ -120,7 +120,7 @@
 
 .card-img-top{
   width:100%;
-  height:auto;
+  height:120px;
 }
 
 .carousel img{
@@ -198,7 +198,8 @@
 
 .imgDiv{
   position: relative;
-  margin-left: -30%;
+  width:100%;
+  height:auto;
 }
 
 .avisos{
@@ -212,7 +213,7 @@ hr{
 }
 
 .button{
-  margin-left: 11%;
+  margin-left: 14%;
   margin-bottom: 20px;
 }
 
@@ -340,13 +341,18 @@ hr{
   transform: scale(1.5);
 }
 
+.avisoFecha{
+  margin-left: auto;
+}
+
 .avisoFileDate{
   display: flex;
-  justify-content: space-between;
 }
 
 .avisoFileDate button{
   max-height: 50px;
+  margin-left: 0%;
+  margin-right: 5%;
 }
 
 .perfilEgreso{
@@ -379,6 +385,11 @@ hr{
 
 .moodle{
   text-align: center;
+}
+
+.moodleButtons button{
+  margin-left: 0%;
+  margin-right: 1%;
 }
 
 .map{

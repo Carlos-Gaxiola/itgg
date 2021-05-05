@@ -7,7 +7,7 @@ import Header from './Header'
 import NavbarITG from './NavbarITG'
 import PictureAsPdf from '@material-ui/icons/PictureAsPdf'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-const SeccionIndividual = () => {
+const SeccionIndividualCards= () => {
 
     const { id } = useParams();
     const [value, setValue] = useState('');
@@ -17,12 +17,10 @@ const SeccionIndividual = () => {
 
 
     useEffect(() => {
-        Axios.get('http://localhost:3001/getServicioIndividual/' + id).then((response) => {
-
-           
-            console.log(response)
-            setValue(response.data.result[0].contenido);
-            setFile(response.data.result[0].file);
+        Axios.get('http://localhost:3001/getCardIndividual/' + id).then((response) => {
+            console.log(response.data[0])
+           setValue(response.data[0].contenido);
+            setFile(response.data[0].file);
 
         })
     }, [id])
@@ -39,31 +37,6 @@ const SeccionIndividual = () => {
         })
     }, [])
 
-    const eliminarServicio = (async(e) => {
-
-        Axios.get('http://localhost:3001/deleteServicio/' + id, {
-        }).then((response) => {
-            console.log(response); 
-        })
-
-    })
-    const onSubmit = async (e) => {
-        e.preventDefault();
-
-        if (file === "") {
-            eliminarServicio()
-        }
-
-        if (file !== "") {
-            Axios.post(`/uploadsServicios-editDel/${id}`).then(() => {
-                eliminarServicio()
-            })
-        }
-
-    }
-
-
-
 
 
     return (
@@ -76,7 +49,7 @@ const SeccionIndividual = () => {
                     <div className="col-lg-12 mt-5">
                         <div className="contenido-servicio mt-3 mb-3">{ReactHtmlParser(value)}
                         </div>
-                        {file !== "" &&
+                        {file &&
                             <Link to={file} target="_blank">
                                 <PictureAsPdf className="avisoFile"></PictureAsPdf>
                                 <p>Descargar documento</p>
@@ -84,12 +57,9 @@ const SeccionIndividual = () => {
                         }
                         {mostrar &&<>
                         <button className="button">
-                            <Link to={`/editarServicio/${id}`} className="link">
+                            <Link to={`/editarCard/${id}`} className="link">
                                 Editar
                                             </Link>
-                        </button>
-                        <button className="button" onClick={onSubmit}>
-                            Eliminar nota
                         </button>
                         </>}
                     </div>
@@ -102,4 +72,4 @@ const SeccionIndividual = () => {
     )
 
 }
-export default SeccionIndividual;
+export default SeccionIndividualCards;

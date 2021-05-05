@@ -30,6 +30,7 @@ const EditarServicio = (() => {
     const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
     const [fileName, setFileName] = useState('Elige un archivo');
+    const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
 
     const handleOnChange = (e, editor) => {
@@ -111,7 +112,6 @@ const EditarServicio = (() => {
         useEffect(() => {
             Axios.get('http://localhost:3001/getServicioIndividual/' + id).then((response) => {
                 
-                console.log(response)
                 
                 setTitulo(response.data.result[0].titulo);
                 setValue(response.data.result[0].contenido);
@@ -120,9 +120,21 @@ const EditarServicio = (() => {
             })
         }, [id])
 
+        useEffect(() => {
+            Axios.get('http://localhost:3001/getToken', {
+            }).then((response) => {
+                if (response.data.authorized === true) {
+                    console.log("estoy autorizado " + response.data.authorized)
+                    setMostrar(true);
+                } else {
+                    console.log("no estoy autorizado" + response.data.authorized)
+                    window.location = '/'
+                }
+            })
+        }, [])
 
     return (
-        <>
+        <>{mostrar && <>
             <Header></Header>
             <NavbarITG></NavbarITG>
 
@@ -170,7 +182,7 @@ const EditarServicio = (() => {
                 </div>
             </div>
             <Footer></Footer>
-        </>
+        </>}</>
 
     )
 

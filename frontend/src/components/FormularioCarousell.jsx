@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Moment from 'moment'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -23,11 +22,8 @@ const FormularioCarousell = (() => {
 
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState('Elige una imagen');
-    //const [filePathSave, setFilePathSave] = useState("Hola");
     const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
-    const [uploadPercentage, setUploadPercentage] = useState(0);
-    const fecha = Moment().format('YYYY/MM/DD')
     
 const [mostrar, setMostrar] = useState(false);
 Axios.defaults.withCredentials = true;
@@ -56,7 +52,7 @@ Axios.defaults.withCredentials = true;
         e.preventDefault();
         const formData = new FormData();
         formData.append('file', file);
-        if (file != "") {
+        if (file !== "") {
             if (!(/\.(jpg|png|gif)$/i).test(file.name)) {
                 setImagenAdd(3);
                 setTimeout(function () { setImagenAdd(0) }, 2000)
@@ -84,7 +80,7 @@ Axios.defaults.withCredentials = true;
                 }
             }
 
-            if (filePathSave != "") {
+            if (filePathSave !== "") {
                 Axios.post('http://localhost:3000/createCarousell', {
                     file: filePathSave
                 }).then(() => {
@@ -103,7 +99,7 @@ Axios.defaults.withCredentials = true;
     }
 
     return (
-        <>
+        <>{mostrar && <>
             <Header></Header>
             <NavbarITG></NavbarITG>
             <Container fluid className="mt-5 mb-5">
@@ -112,13 +108,13 @@ Axios.defaults.withCredentials = true;
                     <Col lg={4}>
                         <Form id="formCarousell">
                             {
-                                imagenAdd == 1 && <Confirmacion mensaje="Imagen añadida correctamente" />
+                                imagenAdd === 1 && <Confirmacion mensaje="Imagen añadida correctamente" />
                             }
                             {
-                                imagenAdd == 2 && <RellenarCampos mensaje="Favor de añadir la imagen" />
+                                imagenAdd === 2 && <RellenarCampos mensaje="Favor de añadir la imagen" />
                             }
                             {
-                                imagenAdd == 3 && <RellenarCampos mensaje="Solo se permiten imagenes" />
+                                imagenAdd === 3 && <RellenarCampos mensaje="Solo se permiten imagenes" />
                             }
                             <div className="custom-file mb-3">
                                 <input type="file" className="custom-file-input" id="customFile" onChange={onChange} />
@@ -146,7 +142,7 @@ Axios.defaults.withCredentials = true;
 
             <Footer></Footer>
 
-        </>
+        </>}</>
     )
 })
 

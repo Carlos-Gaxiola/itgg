@@ -9,6 +9,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 const CrudMoodle = () => {
     const [moodleList, setMoodleList] = useState([])
+    const [mostrar, setMostrar] = useState(false);
+    Axios.defaults.withCredentials = true;
 
     useEffect(() => {
         Axios.get('http://localhost:3000/getMoodle').then((response) => {
@@ -16,9 +18,21 @@ const CrudMoodle = () => {
         })
     }, [])
 
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+                window.location = '/'
+            }
+        })
+    }, [])
 
     return (
-        <>
+        <>{mostrar && <>
             <Header />
             <NavbarITG />
             <NavbarContacto />
@@ -28,6 +42,7 @@ const CrudMoodle = () => {
                     return <div className="moodle">
                         <h3 key={val.id} className="avisoTitulo">{val.titulo}</h3>
                         <p>{val.servidor}</p>
+                        <div className="moodleButtons">
                         <Button className="button">
                             <Link to={`/editarMoodle/${val.id}`} className="link">
                                 Editar
@@ -38,11 +53,12 @@ const CrudMoodle = () => {
                                 Eliminar
                                 </Link>
                         </Button>
+                        </div>
                     </div>
                 })
             }
             <Footer />
-        </>
+        </>}</>
     )
 }
 

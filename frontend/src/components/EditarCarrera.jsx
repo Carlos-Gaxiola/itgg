@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Moment from 'moment'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -30,11 +29,8 @@ const EditarCarrera = (() => {
 
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState('Elige un archivo');
-    //const [filePathSave, setFilePathSave] = useState("Hola");
     const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
-    const [uploadPercentage, setUploadPercentage] = useState(0);
-    const fecha = Moment().format('YYYY/MM/DD')
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
     var filePathSave = ""
@@ -112,19 +108,19 @@ const EditarCarrera = (() => {
     }
 
     const onSubmit = async (e) => {
-        if (campoVacio == false) {
+        if (campoVacio === false) {
         e.preventDefault();
         const formData = new FormData();
         formData.append('file', file);
 
-        if (file == "") {
+        if (file === "") {
             Axios.post(`/uploads-carreras-editDel/${id}`).then((response) => {
                 const { filePath } = response.data;
                 updateCarrera(filePath)
             })
         }
 
-        if (file != "") {
+        if (file !== "") {
             try {
                 const res = await Axios.post(`/uploads-carreras-edit/${id}`, formData, {
                     headers: {
@@ -165,10 +161,10 @@ const EditarCarrera = (() => {
                     <Col lg={4}>
                         <Form id="formCarreras">
                             {
-                                carreraAdd == 1 && <Confirmacion mensaje="Oferta academica editada correctamente" />
+                                carreraAdd === 1 && <Confirmacion mensaje="Oferta academica editada correctamente" />
                             }
                             {
-                                carreraAdd == 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
+                                carreraAdd === 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
                             }
                             <Form.Group controlId="licenciatura">
                                 <Form.Label>Licenciatura</Form.Label>

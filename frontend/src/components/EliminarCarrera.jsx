@@ -17,7 +17,6 @@ const EliminarCarrera = () => {
 
     const { id } = useParams()
     const [datos, setDatos] = useState([])
-    const [message, setMessage] = useState('');
     const [avisosAdd, setAvisosAdd] = useState(0);
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
@@ -52,11 +51,11 @@ const EliminarCarrera = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        if (datos.file == "") {
+        if (datos.file === "") {
             deleteCarrera()
         }
 
-        if (datos.file != "") {
+        if (datos.file !== "") {
             Axios.post(`/uploads-carreras-editDel/${id}`).then(() => {
                 deleteCarrera()
             })
@@ -73,7 +72,7 @@ const EliminarCarrera = () => {
             <NavbarITG />
             <NavbarContacto />
             {
-                avisosAdd == 0 &&
+                avisosAdd === 0 &&
                 <Container>
                     <Row >
                         <Col lg={1}></Col>
@@ -109,7 +108,7 @@ const EliminarCarrera = () => {
                 </Container>
             }
             {
-                avisosAdd == 1 &&
+                avisosAdd === 1 &&
                 <Container>
                     <Row >
                         <Col lg={1}></Col>

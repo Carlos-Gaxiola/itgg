@@ -40,7 +40,7 @@ const FormularioMoodle = (() => {
     }, [])
 
     const onSubmit = async (e) => {
-        if (titulo != "" && servidor != "") {
+        if (titulo !== "" && servidor !== "") {
             Axios.post('http://localhost:3000/createMoodle', {
                 titulo: titulo,
                 servidor: servidor
@@ -59,7 +59,7 @@ const FormularioMoodle = (() => {
     }
 
     return (
-        <>
+        <>{mostrar && <>
             <Header></Header>
             <NavbarITG></NavbarITG>
             <Container fluid className="mt-5 mb-5">
@@ -68,10 +68,10 @@ const FormularioMoodle = (() => {
                     <Col lg={4}>
                         <Form id="formMoodle">
                             {
-                                moodleAdd == 1 && <Confirmacion mensaje="Elemento moodle añadido correctamente" />
+                                moodleAdd === 1 && <Confirmacion mensaje="Elemento moodle añadido correctamente" />
                             }
                             {
-                                moodleAdd == 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
+                                moodleAdd === 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
                             }
                             <Form.Group controlId="titulo">
                                 <Form.Label>Título</Form.Label>
@@ -102,7 +102,7 @@ const FormularioMoodle = (() => {
 
             <Footer></Footer>
 
-        </>
+        </>}</>
     )
 })
 

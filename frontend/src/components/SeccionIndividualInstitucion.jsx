@@ -7,7 +7,7 @@ import Header from './Header'
 import NavbarITG from './NavbarITG'
 import PictureAsPdf from '@material-ui/icons/PictureAsPdf'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-const SeccionIndividual = () => {
+const SeccionIndividualInstitucion = () => {
 
     const { id } = useParams();
     const [value, setValue] = useState('');
@@ -15,14 +15,11 @@ const SeccionIndividual = () => {
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
 
-
     useEffect(() => {
-        Axios.get('http://localhost:3001/getServicioIndividual/' + id).then((response) => {
-
-           
-            console.log(response)
-            setValue(response.data.result[0].contenido);
-            setFile(response.data.result[0].file);
+        Axios.get('http://localhost:3001/getInstitucionIndividual/' + id).then((response) => {
+            console.log(response.data[0])
+           setValue(response.data[0].contenido);
+            setFile(response.data[0].file);
 
         })
     }, [id])
@@ -39,11 +36,11 @@ const SeccionIndividual = () => {
         })
     }, [])
 
-    const eliminarServicio = (async(e) => {
+    const eliminarInstitucion = (async (e) => {
 
-        Axios.get('http://localhost:3001/deleteServicio/' + id, {
+        Axios.get('http://localhost:3001/deleteInstitucion/' + id, {
         }).then((response) => {
-            console.log(response); 
+            console.log(response);
         })
 
     })
@@ -51,12 +48,12 @@ const SeccionIndividual = () => {
         e.preventDefault();
 
         if (file === "") {
-            eliminarServicio()
+            eliminarInstitucion()
         }
 
         if (file !== "") {
-            Axios.post(`/uploadsServicios-editDel/${id}`).then(() => {
-                eliminarServicio()
+            Axios.post(`/uploadsAlumnos-editDel/${id}`).then(() => {
+                eliminarInstitucion()
             })
         }
 
@@ -82,9 +79,9 @@ const SeccionIndividual = () => {
                                 <p>Descargar documento</p>
                             </Link>
                         }
-                        {mostrar &&<>
+                        {mostrar&&<>
                         <button className="button">
-                            <Link to={`/editarServicio/${id}`} className="link">
+                            <Link to={`/editarInstitucion/${id}`} className="link">
                                 Editar
                                             </Link>
                         </button>
@@ -102,4 +99,4 @@ const SeccionIndividual = () => {
     )
 
 }
-export default SeccionIndividual;
+export default SeccionIndividualInstitucion;

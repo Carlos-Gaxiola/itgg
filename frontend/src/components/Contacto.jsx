@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Moment from 'moment'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -23,35 +22,12 @@ const Contacto = (() => {
     const [mensaje, setMensaje] = useState("");
     const [correo, setCorreo] = useState("");
     const [correoSend, setCorreoSend] = useState(0);
-
-    const [file, setFile] = useState('');
-    const [fileName, setFileName] = useState('Elige un archivo');
-    //const [filePathSave, setFilePathSave] = useState("Hola");
-    const [uploadedFile, setUploadedFile] = useState({})
-    const [message, setMessage] = useState('');
-    const [uploadPercentage, setUploadPercentage] = useState(0);
-    const fecha = Moment().format('YYYY/MM/DD')
     
-const [mostrar, setMostrar] = useState(false);
 Axios.defaults.withCredentials = true;
-    var filePathSave = ""
 
-
-    useEffect(() => {
-        Axios.get('http://localhost:3001/getToken', {
-        }).then((response) => {
-            if (response.data.authorized === true) {
-                console.log("estoy autorizado " + response.data.authorized)
-                setMostrar(true);
-            } else {
-                console.log("no estoy autorizado" + response.data.authorized)
-                window.location = '/'
-            }
-        })
-    }, [])
 
     const onSubmit = async (e) => {
-        if (asunto != "" && mensaje != "" && correo !="") {
+        if (asunto !== "" && mensaje !== "" && correo !== "") {
             Axios.post('http://localhost:3000/sendContacto', {
                 asunto: asunto,
                 mensaje: mensaje,
@@ -80,10 +56,10 @@ Axios.defaults.withCredentials = true;
                     <Col lg={4}>
                         <Form id="formContacto">
                             {
-                                correoSend == 1 && <Confirmacion mensaje="Correo enviado correctamente" />
+                                correoSend === 1 && <Confirmacion mensaje="Correo enviado correctamente" />
                             }
                             {
-                                correoSend == 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
+                                correoSend === 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
                             }
                             <Form.Group controlId="correo">
                                 <Form.Label>Correo</Form.Label>

@@ -17,7 +17,6 @@ const EliminarMoodle = () => {
 
     const { id } = useParams()
     const [moodleData, setMoodleData] = useState([])
-    const [message, setMessage] = useState('');
     const [moodleAdd, setMoodleAdd] = useState(0);
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
@@ -60,7 +59,7 @@ const EliminarMoodle = () => {
             <NavbarITG />
             <NavbarContacto />
             {
-                moodleAdd == 0 &&
+                moodleAdd === 0 &&
                 <Container>
                     <Row >
                         <Col lg={1}></Col>
@@ -97,7 +96,7 @@ const EliminarMoodle = () => {
                 </Container>
             }
             {
-                moodleAdd == 1 &&
+                moodleAdd === 1 &&
                 <Container>
                     <Row >
                         <Col lg={1}></Col>

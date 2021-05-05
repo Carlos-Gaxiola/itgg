@@ -11,7 +11,6 @@ import EliminarAviso from './components/EliminarAviso'
 import EditarCarrera from './components/EditarCarrera'
 import EliminarCarrera from './components/EliminarCarrera'
 import RegistroLogin from './components/RegistroLogin'
-import PruebaRol from './components/PruebaRol'
 import PruebaModal from './components/PruebaModal'
 import ResetPassword from './components/ResetPassword'
 import NewPassword from './components/NewPassword'
@@ -26,6 +25,11 @@ import EditarServicio from './components/EditarServicio'
 import SeccionAlumnos from './components/SeccionAlumnos'
 import SeccionIndividualAlumnos from './components/SeccionIndividualAlumnos'
 import EditarAlumno from './components/EditarAlumno'
+import SeccionInstitucion from './components/SeccionInstitucion'
+import SeccionIndividualInstitucion from './components/SeccionIndividualInstitucion'
+import EditarInstitucion from './components/EditarInstitucion'
+import SeccionIndividualCards from './components/SeccionIndividualCards'
+import EditarCard from './components/EditarCard'
 
 import './App.css';
 import Contacto from './components/Contacto'
@@ -39,9 +43,6 @@ function App() {
             <Switch>
                 <Route exact path="/">
                     <Main />
-                </Route>
-                <Route path="/rol">
-                    <PruebaRol />
                 </Route>
                 <Route path="/login">
                     <RegistroLogin />
@@ -117,6 +118,21 @@ function App() {
                 </Route>
                 <Route path="/editarAlumno/:id">
                     <EditarAlumno/>
+                </Route>
+                <Route path="/formularioInstitucion">
+                    <SeccionInstitucion/>
+                </Route>
+                <Route path="/InstitucionIndividual/:id">
+                    <SeccionIndividualInstitucion/>
+                </Route>
+                <Route path="/editarInstitucion/:id">
+                    <EditarInstitucion/>
+                </Route>
+                <Route path="/CardIndividual/:id">
+                    <SeccionIndividualCards/>
+                </Route>
+                <Route path="/editarCard/:id">
+                    <EditarCard/>
                 </Route>
             </Switch>
         </Router>

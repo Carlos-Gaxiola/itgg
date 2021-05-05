@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import Moment from 'moment'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -22,7 +21,6 @@ const EditarAviso = (() => {
     const [campoVacio, setCampoVacio] = useState(false)
     const [titulo, setTitulo] = useState("");
     const [descripcion, setDescripcion] = useState("");
-    const [avisosList, setAvisosList] = useState([]);
     const [avisosAdd, setAvisosAdd] = useState(0);
     const { id } = useParams();
     const [datos, setDatos] = useState([])
@@ -30,7 +28,6 @@ const EditarAviso = (() => {
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState('Elige un archivo');
     const [message, setMessage] = useState('');
-    const fecha = Moment().format('YYYY/MM/DD')
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
 
@@ -94,19 +91,19 @@ const handleDescriptionChange = (d) => {
 }
 
 const onSubmit = async (e) => {
-    if (campoVacio == false) {
+    if (campoVacio === false) {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', file);
 
-    if (file == "") {
+    if (file === "") {
         Axios.post(`/uploads-editDel/${id}`).then((response) => {
             const { filePath } = response.data;
             updateAviso(filePath)
         })
     }
 
-    if (file != "") {
+    if (file !== "") {
         try {
             const res = await Axios.post(`/uploads-edit/${id}`, formData, {
                 headers: {

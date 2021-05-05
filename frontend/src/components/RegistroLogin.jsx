@@ -55,7 +55,12 @@ const RegistroLogin = () => {
             if (response.data.authorized === true) {
                 console.log("estoy autorizado " + response.data.authorized)
                 setAuth(true)
-                setMostrar(true);
+                if(response.data.authData.role === 'admin'){
+                    setMostrar(true)
+                }else{
+                    setMostrar(false)
+                    window.location = '/'
+                }
             } else {
                 console.log("no estoy autorizado" + response.data.authorized)
 
@@ -101,8 +106,22 @@ const RegistroLogin = () => {
                 setTimeout(function () { setMensajeLog('') }, 5000)
 
             } else {
-                setMostrar(true)
                 setRole(response.data.user.role);
+                console.log(response.data.user.role);
+                var rolillo = response.data.user.role;
+
+                if(rolillo === 'admin'){
+                    setMostrar(true)
+                    console.log(rol + "rooooool")
+                    console.log('mostrar true')
+                }else{
+                    setMostrar(false)
+                    console.log(rol + "rooooool")
+                    console.log('mostrar false')
+                }
+                
+                
+                
                 setMensajeLogT('Sesión iniciada correctamente');
                 window.location = '/login'
                 setTimeout(function () { setMensajeLogT('') }, 5000)

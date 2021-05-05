@@ -17,7 +17,6 @@ const EliminarAviso = () => {
 
     const { id } = useParams()
     const [datos, setDatos] = useState([])
-    const [message, setMessage] = useState('');
     const [avisosAdd, setAvisosAdd] = useState(0);
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
@@ -51,11 +50,11 @@ const EliminarAviso = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        if (datos.file == "") {
+        if (datos.file === "") {
             deleteAviso()
         }
 
-        if (datos.file != "") {
+        if (datos.file !== "") {
             Axios.post(`/uploads-editDel/${id}`).then(() => {
                 deleteAviso()
             })
@@ -72,7 +71,7 @@ const EliminarAviso = () => {
             <NavbarITG />
             <NavbarContacto />
             {
-                avisosAdd == 0 &&
+                avisosAdd === 0 &&
                 <Container>
                     <Row >
                         <Col lg={1}></Col>
@@ -109,7 +108,7 @@ const EliminarAviso = () => {
                 </Container>
             }
             {
-                avisosAdd == 1 &&
+                avisosAdd === 1 &&
                 <Container>
                     <Row >
                         <Col lg={1}></Col>

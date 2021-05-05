@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { useParams } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser'
 import Axios from 'axios';
 import Footer from './Footer'
@@ -16,23 +15,21 @@ const schema = yup.object().shape({
 
 
 });
-const EditarAlumno = (() => {
+const SeccionInstitucion = () => {
     const { register, handleSubmit, errors } = useForm({
         resolver: yupResolver(schema),
 
     })
-    const { id } = useParams();
     const [value, setValue] = useState('');
     const [titulo, setTitulo] = useState('');
     const [mensaje, setMensaje] = useState('');
     const [mensajeExito, setMensajeExito] = useState('');
     const [file, setFile] = useState('');
+    const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
-    const [uploadedFile, setUploadedFile] = useState('')
     const [fileName, setFileName] = useState('Elige un archivo');
-    const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
-
+    var filePathSave = ""
     const handleOnChange = (e, editor) => {
 
         const data = editor.getData();
@@ -42,44 +39,18 @@ const EditarAlumno = (() => {
         setFile(e.target.files[0]);
         setFileName(e.target.files[0].name);
     }
+    const onSubmit = async (e) => {
 
-    const updateAlumno = (filePath) => {
-        
-        Axios.post('http://localhost:3001/editarAlumno', {
-            id: id,
-            titulo: titulo,
-            value: value,
-            file: filePath
-        }).then((response) => {
-            console.log(response.data);
-            console.log(filePath+"soy filepath")
-            setMensajeExito(response.data.mensaje);
-            setTimeout(function () { setMensajeExito('') }, 5000);
-            setFileName("Elige un archivo")
-            setFile("")
-
-
-        })
-    }
-    const onSubmit = async () => {
-        if (value === '' || value === null) {
-
+        if (value === '') {
             setMensaje('No se puede dejar vació el campo del contenido de la nota');
             setTimeout(function () { setMensaje('') }, 5000)
         } else {
             const formData = new FormData();
+            
             formData.append('file', file);
-
-            if (file === "") {
-                Axios.post(`/uploadsAlumnos-editDel/${id}`).then((response) => {
-                    const { filePath } = response.data;
-                    console.log(response.data)
-                    updateAlumno(filePath)
-                })
-            }
-            if (file !== "") {
+            if (file != "") {
                 try {
-                    const res = await Axios.post(`/uploads-editAlumno/${id}`, formData, {
+                    const res = await Axios.post('/uploadsInstitucion', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         }
@@ -87,12 +58,10 @@ const EditarAlumno = (() => {
                     });
 
                     const { fileName, filePath } = res.data;
-                    
-
+                    filePathSave = filePath
 
                     setUploadedFile({ fileName, filePath });
                     setMessage('Archivo subido')
-                    updateAlumno(filePath);
 
                 } catch (err) {
                     if (err.response.status === 500) {
@@ -103,54 +72,33 @@ const EditarAlumno = (() => {
                 }
             }
 
-
-
-
-        }
-    }
-
-
-        useEffect(() => {
-            Axios.get('http://localhost:3001/getAlumnoIndividual/' + id).then((response) => {
-                
-                console.log(response)
-                setTitulo(response.data.result[0].titulo);
-                setValue(response.data.result[0].contenido);
-                
-                
-
-
-            })
-        }, [id])
-
-        useEffect(() => {
-            Axios.get('http://localhost:3001/getToken', {
+            Axios.post('http://localhost:3001/publicarInstitucion', {
+                titulo: titulo,
+                value: value,
+                file: filePathSave
             }).then((response) => {
-                if (response.data.authorized === true) {
-                    console.log("estoy autorizado " + response.data.authorized)
-                    setMostrar(true);
-                } else {
-                    console.log("no estoy autorizado" + response.data.authorized)
-                    window.location = '/'
-                }
+                console.log(response.data.mensaje);
+                setMensajeExito(response.data.mensaje);
+                setTimeout(function () { setMensajeExito('') }, 5000);
+
+
             })
-        }, [])
+        }
 
-
+    }
     return (
-        <>{mostrar && <>
+        <>
             <Header></Header>
             <NavbarITG></NavbarITG>
-
             <div className="container">
                 <div ckassName="row">
                     <div className="lg-3" />
                     <div className="lg-9 mt-5">
-                        <h1 className="mb-3">Formulario alumnos</h1>
+                        <h1 className="mb-3">Formulario sección institución</h1>
                         {mensajeExito !== '' && <p className='alert alert-success'>{mensajeExito}</p>}
                         <div className="form-group">
                             <h2>Título</h2>
-                            <input type="text" className="form-control" placeholder="Ingrese el título" name="titulo" required="required" onChange={(e) => { setTitulo(e.target.value) }} ref={register} value={titulo} />
+                            <input type="text" className="form-control" placeholder="Ingrese el título" name="titulo" required="required" onChange={(e) => { setTitulo(e.target.value) }} ref={register} />
                             {errors.titulo?.message &&
                                 <p className='aler alert-danger'>{errors.titulo?.message}</p>
                             }
@@ -165,7 +113,6 @@ const EditarAlumno = (() => {
                         </div>
                         <h2>Contenido</h2>
                         <CKEditor editor={ClassicEditor}
-                            data={value}
                             onChange={handleOnChange}
                             config={{
                                 toolbar: ['heading', '|', 'bold', 'italic', '|', 'link', 'numberedList', 'bulletedList', '|', 'insertTable',
@@ -180,16 +127,16 @@ const EditarAlumno = (() => {
                     </div>
 
                     <div className="lg-3">
-                        <button className="mt-3" onClick={handleSubmit(onSubmit)}>Editar</button>
-                        {mensajeExito !== '' && <p className='alert alert-success'>{mensajeExito}</p>}
+                        <button className="mt-3" onClick={handleSubmit(onSubmit)}>Añadir</button>
                     </div>
+                    {mensajeExito !== '' && <p className='alert alert-success'>{mensajeExito}</p>}
                 </div>
             </div>
             <Footer></Footer>
-        </>}</>
+        </>
 
     )
 
-})
+}
 
-export default EditarAlumno;
+export default SeccionInstitucion;

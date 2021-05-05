@@ -13,16 +13,6 @@ import Axios from 'axios'
 
 
 const Feed = (() => {
-    /* const [users, setUsers] = useState([]);
- 
-     useEffect(() => {
-         fetch("/users/").then(res => {
-             if (res.ok) {
-                 return res.json()
-             }
-         }).then(jsonRes => setUsers(jsonRes.usersList))
-     })*/
-
     const [avisosList, setAvisosList] = useState([]);
     const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
@@ -57,8 +47,8 @@ const Feed = (() => {
             </Container>
             <Container fluid className="wrapper">
                 <Row>
-                    <Col lg={3} className="transparent"></Col>
-                    <Col lg={6} className="contenedor">
+                    <Col lg={1} className="transparent"></Col>
+                    <Col lg={8} className="contenedor">
                         {
                             avisosList &&
                             avisosList.map((val, key) => {
@@ -68,15 +58,14 @@ const Feed = (() => {
                                     } else {
                                         isImage = false
                                     }
-                                return <div className="avisos">
-                                    <h3 key={val.id} className="avisoTitulo">{val.titulo}</h3>
-                                    <p>{val.descripcion}</p>
-                                        {
+                                return <div>
+                                    <Row>
+                                        <Col lg={3}>{
                                             isImage === true &&
                                                 val.file ?
                                                 <div className="imgDiv">
                                                     <a href={val.file} target="_blank">
-                                                        <img src={val.file} className="img-fluid img-thumbnail" width="200px" height="200px" />
+                                                        <img src={val.file} className="img-fluid img-thumbnail" />
                                                     </a>
 
                                                 </div>
@@ -91,7 +80,12 @@ const Feed = (() => {
                                                 </Link>
                                                 :
                                                 <p></p>
-                                        }
+                                        }</Col>
+                                        <Col lg={9}> <h3 key={val.id} className="avisoTitulo">{val.titulo}</h3>
+                                    <p>{val.descripcion}</p></Col>
+                                    </Row>
+                                   
+                                        
                                     <div className="avisoFileDate">
                                         {mostrar &&
                                             <>
@@ -108,13 +102,13 @@ const Feed = (() => {
                                             </>
                                         }
                                         <p avisoFecha className="avisoFecha">{Moment(val.fecha).format('DD/MM/YYYY')}</p>
-                                    </div>
+                                        </div>
                                     <hr></hr>
                                 </div>
                             })
                         }
                         {
-                            avisosList == "" &&
+                            avisosList === "" &&
                             <h3>No hay nuevos avisos</h3>
                         }
                     </Col>

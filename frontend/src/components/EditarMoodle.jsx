@@ -40,7 +40,7 @@ const EditarMoodle = (() => {
     }, [moodleData])
 
     useEffect(() => {
-        if (titulo == "" || servidor == "") {
+        if (titulo === "" || servidor === "") {
             setCampoVacio(true)
         } else {
             setCampoVacio(false)
@@ -69,7 +69,7 @@ const EditarMoodle = (() => {
     }, [])
 
     const onSubmit = async (e) => {
-        if (titulo != "" && servidor != "") {
+        if (titulo !== "" && servidor !== "") {
             Axios.post('http://localhost:3000/editMoodle/' + id, {
                 titulo: titulo,
                 servidor: servidor
@@ -85,7 +85,7 @@ const EditarMoodle = (() => {
     }
 
     return (
-        <>
+        <>{mostrar && <>
             <Header></Header>
             <NavbarITG></NavbarITG>
             <Container fluid className="mt-5 mb-5">
@@ -94,10 +94,10 @@ const EditarMoodle = (() => {
                     <Col lg={4}>
                         <Form id="formMoodle">
                             {
-                                moodleAdd == 1 && <Confirmacion mensaje="Elemento moodle editado correctamente" />
+                                moodleAdd === 1 && <Confirmacion mensaje="Elemento moodle editado correctamente" />
                             }
                             {
-                                moodleAdd == 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
+                                moodleAdd === 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
                             }
                             <Form.Group controlId="titulo">
                                 <Form.Label>Título</Form.Label>
@@ -128,7 +128,7 @@ const EditarMoodle = (() => {
 
             <Footer></Footer>
 
-        </>
+        </>}</>
     )
 })
 

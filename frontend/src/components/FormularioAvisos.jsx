@@ -21,7 +21,6 @@ const FormularioAvisos = (() => {
 
     const [titulo, setTitulo] = useState("");
     const [descripcion, setDescripcion] = useState("");
-    const [avisosList, setAvisosList] = useState([]);
     const [avisosAdd, setAvisosAdd] = useState(0);
 
     const [file, setFile] = useState('');
@@ -29,7 +28,6 @@ const FormularioAvisos = (() => {
     //const [filePathSave, setFilePathSave] = useState("Hola");
     const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
-    const [uploadPercentage, setUploadPercentage] = useState(0);
     const fecha = Moment().format('YYYY/MM/DD')
     
 const [mostrar, setMostrar] = useState(false);
@@ -60,7 +58,7 @@ Axios.defaults.withCredentials = true;
         e.preventDefault();
         const formData = new FormData();
         formData.append('file', file);
-        if(file != ""){
+        if(file !== ""){
         try {
             const res = await Axios.post('/uploads', formData, {
                 headers: {
@@ -84,7 +82,7 @@ Axios.defaults.withCredentials = true;
         }
         }
 
-        if (titulo != "" && descripcion != "") {
+        if (titulo !== "" && descripcion !== "") {
             Axios.post('http://localhost:3000/createAviso', {
                 titulo: titulo,
                 descripcion: descripcion,
@@ -107,7 +105,7 @@ Axios.defaults.withCredentials = true;
     }
 
     return (
-        <>
+        <>{mostrar && <>
             <Header></Header>
             <NavbarITG></NavbarITG>
             <Container fluid className="mt-5 mb-5">
@@ -116,10 +114,10 @@ Axios.defaults.withCredentials = true;
                     <Col lg={4}>
                         <Form id="formAvisos">
                             {
-                                avisosAdd == 1 && <Confirmacion mensaje="Aviso añadido correctamente" />
+                                avisosAdd === 1 && <Confirmacion mensaje="Aviso añadido correctamente" />
                             }
                             {
-                                avisosAdd == 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
+                                avisosAdd === 2 && <RellenarCampos mensaje="Rellenar todos los campos" />
                             }
                             <Form.Group controlId="titulo">
                                 <Form.Label>Título</Form.Label>
@@ -156,7 +154,7 @@ Axios.defaults.withCredentials = true;
 
             <Footer></Footer>
 
-        </>
+        </>}</>
     )
 })
 

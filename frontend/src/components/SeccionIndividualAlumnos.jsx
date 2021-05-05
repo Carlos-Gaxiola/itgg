@@ -12,6 +12,9 @@ const SeccionIndividualAlumnos = () => {
     const { id } = useParams();
     const [value, setValue] = useState('');
     const [file, setFile] = useState('');
+    const [mostrar, setMostrar] = useState(false);
+    Axios.defaults.withCredentials = true;
+
     useEffect(() => {
         Axios.get('http://localhost:3001/getAlumnoIndividual/' + id).then((response) => {
 
@@ -20,6 +23,18 @@ const SeccionIndividualAlumnos = () => {
 
         })
     }, [id])
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+            }
+        })
+    }, [])
 
     const eliminarAlumno = (async (e) => {
 
@@ -32,11 +47,11 @@ const SeccionIndividualAlumnos = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        if (file == "") {
+        if (file === "") {
             eliminarAlumno()
         }
 
-        if (file != "") {
+        if (file !== "") {
             Axios.post(`/uploadsAlumnos-editDel/${id}`).then(() => {
                 eliminarAlumno()
             })
@@ -64,7 +79,7 @@ const SeccionIndividualAlumnos = () => {
                                 <p>Descargar documento</p>
                             </Link>
                         }
-
+                        {mostrar && <>
                         <button className="button">
                             <Link to={`/editarAlumno/${id}`} className="link">
                                 Editar
@@ -73,7 +88,7 @@ const SeccionIndividualAlumnos = () => {
                         <button className="button" onClick={onSubmit}>
                             Eliminar nota
                         </button>
-
+                        </>}
                     </div>
 
                 </div>

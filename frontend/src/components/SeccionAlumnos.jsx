@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import ReactHtmlParser from 'react-html-parser'
@@ -28,8 +28,23 @@ const SeccionAlumnos = () => {
     const [uploadedFile, setUploadedFile] = useState({})
     const [message, setMessage] = useState('');
     const [fileName, setFileName] = useState('Elige un archivo');
+    const [mostrar, setMostrar] = useState(false);
     Axios.defaults.withCredentials = true;
     var filePathSave = ""
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getToken', {
+        }).then((response) => {
+            if (response.data.authorized === true) {
+                console.log("estoy autorizado " + response.data.authorized)
+                setMostrar(true);
+            } else {
+                console.log("no estoy autorizado" + response.data.authorized)
+                window.location = '/'
+            }
+        })
+    }, [])
+
     const handleOnChange = (e, editor) => {
 
         const data = editor.getData();
@@ -48,7 +63,7 @@ const SeccionAlumnos = () => {
             const formData = new FormData();
             
             formData.append('file', file);
-            if (file != "") {
+            if (file !== "") {
                 try {
                     const res = await Axios.post('/uploadsAlumnos', formData, {
                         headers: {
@@ -87,7 +102,7 @@ const SeccionAlumnos = () => {
 
     }
     return (
-        <>
+        <>{mostrar && <>
             <Header></Header>
             <NavbarITG></NavbarITG>
             <div className="container">
@@ -132,7 +147,7 @@ const SeccionAlumnos = () => {
                 </div>
             </div>
             <Footer></Footer>
-        </>
+        </>}</>
 
     )
 
